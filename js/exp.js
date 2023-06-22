@@ -132,6 +132,22 @@ const exp = (function() {
           },
         };
 
+        const practiceComplete = {
+            type: jsPsychSurvey,
+            pages: [
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p><strong>Practice is now complete!</strong></p>
+                        <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel. You'll
+                        find out how many points you earned after both rounds are complete.</p>`
+                    },
+                ],
+
+            ],
+            button_label_finish: 'Next',
+        };
+
         const readyToPlay = {
             type: jsPsychSurvey,
             pages: [
@@ -147,7 +163,7 @@ const exp = (function() {
             button_label_finish: 'Next',
         };
 
-        this.timeline = [instLoop, readyToPlay];
+        this.timeline = [practiceComplete, instLoop, readyToPlay];
     }
 
     function MakePracticeWheel(text, round) {
