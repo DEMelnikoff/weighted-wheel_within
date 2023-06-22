@@ -446,15 +446,33 @@ const exp = (function() {
         };
     };
 
+    function MakeMeaningQs(round) {
+        this.type = jsPsychSurveyLikert;
+        this.questions = [
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>While playing Round ${round} of Spin the Wheel, to what extent did you feel like you were doing something meaningful?</div>`,
+                name: `effort`,
+                labels: zeroToALot,
+                required: true,
+            },
+        ];
+        this.randomize_question_order = false;
+        this.scale_width = 500;
+        this.data = {round: round, mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
+        this.on_finish = (data) => {
+            dmPsych.saveSurveyData(data);      
+        };
+    };
+
     // timeline: first wheel
     p.wheel_1 = {
-        timeline: [...practiceWheels_r1.timeline, attnChk1, wheel, new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1)],
+        timeline: [...practiceWheels_r1.timeline, attnChk1, wheel, new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1), new MakeMeaningQs(1)],
         timeline_variables: makeTimelineVariables(settings, 1),
     };
 
     // timeline: second wheel
     p.wheel_2 = {
-        timeline: [...practiceWheels_r2.timeline, attnChk2, wheel, new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2)],
+        timeline: [...practiceWheels_r2.timeline, attnChk2, wheel, new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeMeaningQs(2)],
         timeline_variables: makeTimelineVariables(settings, 2),
     };
 
