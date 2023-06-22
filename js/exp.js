@@ -453,7 +453,7 @@ const exp = (function() {
         this.questions = [
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>While playing Round ${round} of Spin the Wheel, to what extent did you feel like you were doing something meaningful?</div>`,
-                name: `effort`,
+                name: `meaning`,
                 labels: zeroToALot,
                 required: true,
             },
