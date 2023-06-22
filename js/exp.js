@@ -452,7 +452,7 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>While playing Round ${round} of Spin the Wheel, to what extent did you feel like you were doing something meaningful?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>While playing Round ${round} of Spin the Wheel,<br>to what extent did you feel like you were doing something meaningful?</div>`,
                 name: `meaning`,
                 labels: zeroToALot,
                 required: true,
