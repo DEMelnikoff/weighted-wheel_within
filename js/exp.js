@@ -11,6 +11,8 @@ const exp = (function() {
         miOrder: ['highMI_first', 'highMI_second'][Math.floor(Math.random() * 2)],
     };
 
+    console.log(settings.effortOrder, settings.miOrder)
+
     let text = {};
 
     if (settings.effortOrder == 'highEffort_first') {
@@ -139,7 +141,7 @@ const exp = (function() {
                     {
                         type: 'html',
                         prompt: `<p><strong>Practice is now complete!</strong></p>
-                        <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel. You'll
+                        <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.<br>You'll
                         find out how many points you earned after both rounds are complete.</p>`
                     },
                 ],
