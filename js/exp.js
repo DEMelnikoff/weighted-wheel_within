@@ -142,15 +142,15 @@ const exp = (function() {
                         type: 'html',
                         prompt: function () {
                             if (round == 1) {
-                                `<p><strong>Practice is now complete!</strong></p>
+                                return `<p><strong>Practice is now complete!</strong></p>
                                 <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.<br>
                                 Throughout both rounds, your current score will be displayed on a score board.</p>`
                             } else {
-                                `<p><strong>Practice is now complete!</strong></p>
+                                return `<p><strong>Practice is now complete!</strong></p>
                                 <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.<br>
                                 In Round 2, you will continue to add to your total score from Round 1.</p>`
-                            }
-                        }
+                            };
+                        },
                     },
                 ],
 
