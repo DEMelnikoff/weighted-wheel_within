@@ -433,7 +433,7 @@ const dmPsych = (function() {
   };
 
   // spinner task
-  obj.spinner = function(canvas, spinnerData, sectors, targetPressTime, guaranteedOutcome, nSpins) {
+  obj.spinner = function(canvas, spinnerData, sectors, targetPressTime, guaranteedOutcome, nSpins, initialScore) {
 
     /* get context */
     const ctx = canvas.getContext("2d"); 
@@ -472,7 +472,7 @@ const dmPsych = (function() {
     let vel_postDecel = 0;       // wheel's velocity after decelerating
     let nSpeedUp = 0;            // number of frames over which the wheel has accelerated
     let nSlowDown = 0;           // number of frames over which the wheel has decelerated
-    let score = 0;
+    let score = initialScore;
 
     /* press rate variables */
     let keydown = false;
@@ -639,9 +639,9 @@ const dmPsych = (function() {
     const updateScore = (points, color) => {
       score += points;
       spinnerData.score = score;
-      // scoreMsg.innerHTML = `<span style="color:${color}; font-weight: bolder">${score}</span>`;
+      scoreMsg.innerHTML = `<span style="color:${color}; font-weight: bolder">${score}</span>`;
       setTimeout(() => {
-        // scoreMsg.innerHTML = `${score}`
+        scoreMsg.innerHTML = `${score}`
         isSpinning = false;
         pointer.style.font = '1.2rem/0 sans-serif';
         pointer.textContent = '';
@@ -681,6 +681,7 @@ const dmPsych = (function() {
         ctx.rotate( (ang + arc / 2) + arc );
         ctx.textAlign = "center";
         ctx.fillStyle = "#fff";
+        /*
         if (isSpinning && i == sector) {
           ctx.font = "bolder 50px sans-serif"
           ctx.strokeStyle = 'black';
@@ -688,9 +689,10 @@ const dmPsych = (function() {
           ctx.strokeText(sectors[i].label, 0, -140);
           ctx.fillText(sectors[i].label, 0, -140);
         } else {
+        */
           ctx.font = "bold 50px sans-serif"
           ctx.fillText(sectors[i].label, 0, -140);
-        }
+        //}
         // RESTORE
         ctx.restore();
       }

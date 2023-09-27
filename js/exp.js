@@ -140,9 +140,17 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: `<p><strong>Practice is now complete!</strong></p>
-                        <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.<br>You'll
-                        find out how many points you earned after both rounds are complete.</p>`
+                        prompt: function () {
+                            if (round == 1) {
+                                `<p><strong>Practice is now complete!</strong></p>
+                                <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.<br>
+                                Throughout both rounds, your current score will be displayed on a score board.</p>`
+                            } else {
+                                `<p><strong>Practice is now complete!</strong></p>
+                                <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.<br>
+                                In Round 2, you will continue to add to your total score from Round 1.</p>`
+                            }
+                        }
                     },
                 ],
 
@@ -156,8 +164,15 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: `<p>You're now ready to play Round ${round} of Spin the Wheel.</p>
-                        <p>To begin, continue to the next screen.</p>`
+                        prompt: function() {
+                            if (round == 1) {
+                                return `<p>You're now ready to play Round ${round} of Spin the Wheel.</p>
+                                <p>To play Round ${round}, continue to the next screen.</p>`
+                            } else {
+                                return `<p>You're now ready to add to your total score by playing Round ${round} of Spin the Wheel.</p>
+                                <p>To play Round ${round}, continue to the next screen.</p>`
+                            }
+                        }
                     },
                 ],
 
@@ -167,6 +182,10 @@ const exp = (function() {
 
         this.timeline = [practiceComplete, instLoop, readyToPlay];
     }
+
+    let scoreTracker_practice = 0; // track current score
+    let scoreTracker = 0; // track current score
+
 
     function MakePracticeWheel(text, round) {
 
@@ -181,11 +200,18 @@ const exp = (function() {
             <p>Practice spinning by (1) tapping your right arrow ${speedText} and then (2) pressing your spacebar when the "Ready!" message appears.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.five, wedges.five], jsPsych.timelineVariable('targetPressTime'), [0], 1);
+                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.five, wedges.five], jsPsych.timelineVariable('targetPressTime'), [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
+            initialScore: function() {
+                return scoreTracker_practice
+            },
+            show_scoreboard: false,
             canvas_size: [500, 500],
             post_trial_gap: 500,
+            on_finish: function(data) {
+                scoreTracker_practice = data.score
+            }
         };
 
         const practiceWheel_2 = {
@@ -196,10 +222,17 @@ const exp = (function() {
                 <p>Once you spin the wheel, you can stop tapping your right arrow.</p>
                 </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.five, wedges.five], jsPsych.timelineVariable('targetPressTime'), [0, 0, 0], 3);
+                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.five, wedges.five], jsPsych.timelineVariable('targetPressTime'), [0, 0, 0], 3, scoreTracker_practice);
             },
-            nSpins: 3,
+            nSpins: 2,
+            initialScore: function() {
+                return scoreTracker_practice
+            },
+            show_scoreboard: false,
             canvas_size: [500, 500],
+            on_finish: function(data) {
+                scoreTracker_practice = data.score
+            }
         };
 
         this.timeline = [practiceWheel_1, practiceWheel_2];
@@ -215,33 +248,39 @@ const exp = (function() {
         type: jsPsychSurvey,
         pages: [
             [
+                {   
+                    type:'html',
+                    prompt:`<p><strong>What makes some activities more immersive and engaging than others?</strong></p>
+                    <p>We're interested in why people feel effortlessly engaged in some activities (such as engrossing video games),<br>
+                    but struggle to focus on other activities (like tedious chores).</p>
+                    <p>To help us, you'll play two rounds of a game called <strong>Spin the Wheel</strong>.<br>
+                    After each round, you'll report how immersed and engaged you felt.</p>
+                    <p>When you're ready to learn about Spin the Wheel, continue to the next page.</p>`
+                },
+            ],
+            [
                 {
                     type: 'html',
-                    prompt: `<p><strong>Welcome to Spin the Wheel!</strong></p>
-                        <p>In this study, you will play two rounds of a game called Spin the Wheel.</p>
-                        <p>In both rounds of Spin the Wheel, you will spin a prize wheel to earn points.
+                    prompt: `<p>In both rounds of Spin the Wheel, you'll spin a prize wheel to earn points.
                         <br>The number of points you earn depends on where the wheel lands.</p>
-                        <p>Your goal in both rounds is to earn as many points as possible!</p>`
+                        <p>Your goal is to earn as many points as possible across the two rounds!</p>`
                 },
-
             ],
             [
                 {
                     type: 'html',
                     prompt: `<p>Spinning a prize wheel is a two-step process.</p>
                         <p>First, you must build momentum by repeatedly tapping the right arrow on your keyboard.</br>
-                        Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
-                        <p>To learn about Round 1 of Spin the Wheel, continue to the next page.</p>`
+                        Once you build enough momentum, you must press your spacebar to spin the wheel.</p>`
                 },
-
             ],
             [
                 {
                     type: 'html',
                     prompt: `<p>In Round 1 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}.<br>${text.speed2_r1}</p>
-                    Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
+                    <p>Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
                     <p>To practice Round 1, continue to the next page.</p>`,
-                }
+                },
             ],
 
         ],
@@ -255,14 +294,15 @@ const exp = (function() {
                 {
                     type: 'html',
                     prompt: `<p>Round 1 of Spin the Wheel is now complete!</p>
-                    <p>Continue to learn about and play Round 2.</p>`
+                    <p>Soon, you'll be able to add to your total score by playing Round 2</p>
+                    <p>To learn about Round 2, continue to the next screen.</p>`
                 },
             ],
             [
                 {
                     type: 'html',
                     prompt: `<p>In Round 2 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r2}.<br>${text.speed2_r2}</p>
-                    Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
+                    <p>Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
                     <p>To practice Round 2, continue to the next page.</p>`,
                 }
             ]
@@ -320,12 +360,19 @@ const exp = (function() {
     const wheel = {
         type: jsPsychCanvasButtonResponse,
         stimulus: function(c, spinnerData) {
-            dmPsych.spinner(c, spinnerData, jsPsych.timelineVariable('sectors'), jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), settings.nSpins);
+            dmPsych.spinner(c, spinnerData, jsPsych.timelineVariable('sectors'), jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), settings.nSpins, scoreTracker);
         },
         nSpins: settings.nSpins,
+        initialScore: function() {
+            return scoreTracker;
+        },
         canvas_size: [500, 500],
+        show_scoreboard: true,
         post_trial_gap: 1000,
         data: {round: jsPsych.timelineVariable('round'), mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
+        on_finish: function(data) {
+            scoreTracker = data.score;
+        },
     };
 
 
@@ -336,8 +383,8 @@ const exp = (function() {
     */
 
     // scales
-    var zeroToExtremely = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8<br>Extremely'];
-    var zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
+    var zeroToExtremely = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>Extremely'];
+    var zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>A lot'];
 
     // constructor functions
     function MakeFlowQs(round) {
@@ -350,32 +397,32 @@ const exp = (function() {
         Report the degree to which you felt immersed and engaged by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, to what extent did you feel <strong>absorbed</strong> in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <strong>absorbed</strong> did you feel in what you were doing?</div>`,
                 name: `absorbed`,
-                labels: zeroToExtremely,
+                labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, to what extent did you feel <strong>immersed</strong> in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <strong>immersed</strong> did you feel in what you were doing?</div>`,
                 name: `immersed`,
-                labels: zeroToExtremely,
+                labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, to what extent did you feel <strong>engaged</strong> in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <strong>engaged</strong> did you feel in what you were doing?</div>`,
                 name: `engaged`,
-                labels: zeroToExtremely,
+                labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, to what extent did you feel <strong>engrossed</strong> in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <strong>engrossed</strong> did you feel in what you were doing?</div>`,
                 name: `engrossed`,
-                labels: zeroToExtremely,
+                labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
                 required: true,
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 500;
+        this.scale_width = 800;
         this.data = {round: round , mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
@@ -423,7 +470,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 500;
+        this.scale_width = 800;
         this.data = {round: round, mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
@@ -641,7 +688,7 @@ const exp = (function() {
 
 
         const demos = {
-            timeline: [taskComplete, meanOfEff, gender, age, ethnicity, english, finalWord]
+            timeline: [taskComplete, gender, age, ethnicity, english, finalWord]
         };
 
         return demos;

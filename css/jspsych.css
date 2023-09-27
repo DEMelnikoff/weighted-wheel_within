@@ -599,7 +599,6 @@
 
 .score-board {
   position: relative;
-  display: flex;
   justify-content: center;
   height:120px; width:300px; 
   margin: auto;

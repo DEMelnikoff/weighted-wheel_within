@@ -46,6 +46,12 @@ var jsPsychCanvasButtonResponse = (function (jspsych) {
               pretty_name: "Response ends trial",
               default: true,
           },
+          /** If true, then the scoreboard is shown. */
+          show_scoreboard: {
+              type: jspsych.ParameterType.BOOL,
+              pretty_name: "Response ends trial",
+              default: false,
+          },
           /** Array containing the height (first value) and width (second value) of the canvas element. */
           canvas_size: {
               type: jspsych.ParameterType.INT,
@@ -58,6 +64,12 @@ var jsPsychCanvasButtonResponse = (function (jspsych) {
               type: jspsych.ParameterType.INT,
               pretty_name: "Number of spins",
               default: 20,
+          },
+          /** Score to start the game. */
+          initialScore: {
+              type: jspsych.ParameterType.INT,
+              pretty_name: "Initial Score",
+              default: 0,
           },
       },
   };
@@ -75,15 +87,20 @@ var jsPsychCanvasButtonResponse = (function (jspsych) {
       }
       trial(display_element, trial) {
           // create canvas
-          var html = 
-              '<div id="jspsych-canvas-button-response-stimulus">' +
-                '<canvas id="jspsych-canvas-stimulus" height="' +
-                trial.canvas_size[0] +
-                '" width="' +
-                trial.canvas_size[1] +
-                '"></canvas>' +
-                '<div id="spin"></div>' +
-              "</div>";
+          let disp; 
+
+          trial.show_scoreboard ? disp = 'flex' : disp = 'none';
+   
+          let html = 
+          `<div class="score-board" style="display: ${disp}">
+            <div class="score-board-title">Total Score</div>
+            <div class="score-board-score" id="score" >${trial.initialScore}</div>
+          </div>
+          <div id="jspsych-canvas-button-response-stimulus">
+            <canvas id="jspsych-canvas-stimulus" height="${trial.canvas_size[0]}" width="${trial.canvas_size[1]}"></canvas>
+            <div id="spin"></div>
+          </div>`;
+         
 
           //show prompt if there is one
           if (trial.prompt !== null) {
