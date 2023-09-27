@@ -41,7 +41,7 @@ const exp = (function() {
         four: {color:"#803400", label:"4"},
         five: {color:"#0094fe", label:"5"},
         six: {color:"#806b00", label:"6"},
-        seven: {color:"#00fe21", label:"7"},
+        seven: {color:"#228B22", label:"7"},
         eight: {color:"#007f0e", label:"8"},
         nine: {color:"#ffd800", label:"9"},
         ten: {color:"#00497e", label:"10"},
