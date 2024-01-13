@@ -501,7 +501,7 @@ const exp = (function() {
         this.questions = [
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>Did you find Round ${round} of Spin the Wheel too easy, too hard, or right in the middle?</div>`,
-                name: `meaning`,
+                name: `scb`,
                 labels: scbScale,
                 required: true,
             },
