@@ -343,7 +343,7 @@ const exp = (function() {
         // set target time between button presses
         let targetPressTime;
         if (settings.effortOrder == 'highEffort_first' && round == 1 || settings.effortOrder == 'highEffort_second' && round == 2) {
-            targetPressTime = [0, .18];
+            targetPressTime = [0, .2];
         } else if (settings.effortOrder == 'highEffort_first' && round == 2 || settings.effortOrder == 'highEffort_second' && round == 1) {
             targetPressTime = [.2, .75];
         };
