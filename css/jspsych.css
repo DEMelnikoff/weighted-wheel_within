@@ -330,7 +330,7 @@
 }
 
 .jspsych-content {
-  max-width: 95%;
+  max-width: 950px;
   /* this is mainly an IE 10-11 fix */
   text-align: center;
   margin: auto;

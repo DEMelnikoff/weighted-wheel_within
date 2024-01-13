@@ -5,10 +5,14 @@ const exp = (function() {
 
     let p = {};
 
+    const miDraw = Math.floor(Math.random() * 2);
     let settings = {
         nSpins: 10,
         effortOrder: ['highEffort_first', 'highEffort_second'][Math.floor(Math.random() * 2)],
-        miOrder: ['highMI_first', 'highMI_second'][Math.floor(Math.random() * 2)],
+        miOrder: ['highMI_first', 'highMI_second'][miDraw],
+        numOutcomes: [['4', '2'], ['2', '4']][miDraw],
+        pct: [['25% chance of winning 2 points, a 25% chance of winning 4 points, a 25% chance of winning 7 points, and a 25% chance of winning 10 points', '75% chance of winning 4 points and a 25% chance of winning 11 points'], ['75% chance of winning 4 points and a 25% chance of winning 11 points', '25% chance of winning 2 points, a 25% chance of winning 4 points, a 25% chance of winning 7 points, and a 25% chance of winning 10 points']][miDraw],
+        imgSrc: [['highMI.png', 'lowMI.png'], ['lowMI.png', 'highMI.png']][miDraw],
     };
 
     let text = {};
@@ -72,6 +76,12 @@ const exp = (function() {
             correctAnswers.push(`In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`);
         };
 
+        if (settings.miOrder == 'highMI_first' && round == 1 || settings.miOrder == 'highMI_second' && round == 2) {
+            correctAnswers.push(`In Round ${round}, I'll be spinning a wheel with 4 unique outcomes.`);
+        } else if (settings.miOrder == 'highMI_first' && round == 2 || settings.miOrder == 'highMI_second' && round == 1) {
+            correctAnswers.push(`In Round ${round}, I'll be spinning a wheel with 2 unique outcomes.`);
+        };
+
         const attnChk = {
            type: jsPsychSurveyMultiChoice,
             preamble: `<div class='parent' style='text-align: left; color: rgb(109, 112, 114)'>
@@ -93,6 +103,11 @@ const exp = (function() {
                     name: `attnChk3`, 
                     options: [`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`, `In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`],
                 },
+                {
+                    prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
+                    name: `attnChk4`, 
+                    options: [`In Round ${round}, I'll be spinning a wheel with 4 unique outcomes.`, `In Round ${round}, I'll be spinning a wheel with 2 unique outcomes.`],
+                },
             ],
             scale_width: 500,
             on_finish: (data) => {
@@ -107,7 +122,7 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: `<p>You provided the wrong answer.<br>To make sure you understand the game, please continue to re-read the instructions.</p>`
+                        prompt: `<p>You provided the wrong answer. Please continue to re-read the instructions.</p>`
                     },
                 ],
             ],
@@ -136,14 +151,27 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
+                        prompt: `<p><b>Practice is now complete!</b></p>
+                        <p>Continue to learn more about Round ${round} of Spin the Wheel.</p>`
+                    },
+                ],
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>Throughout Round ${round}, you'll spin the following wheel:</p>
+                        <img src="./img/${settings.imgSrc[round-1]}" height="300px" width="300px" style="display:block; margin: auto">
+                        <p>It has ${settings.numOutcomes[round-1]} unique outcomes. On each spin, you'll have a ${settings.pct[round-1]}.</p>`
+                    },
+                ],
+                [
+                    {
+                        type: 'html',
                         prompt: function () {
                             if (round == 1) {
-                                return `<p><strong>Practice is now complete!</strong></p>
-                                <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.<br>
+                                return `<p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.
                                 Throughout both rounds, your current score will be displayed on a score board.</p>`
                             } else {
-                                return `<p><strong>Practice is now complete!</strong></p>
-                                <p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.<br>
+                                return `<p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.
                                 In Round 2, you will continue to add to your total score from Round 1.</p>`
                             };
                         },
@@ -247,9 +275,9 @@ const exp = (function() {
                 {   
                     type:'html',
                     prompt:`<p><strong>What makes some activities more immersive and engaging than others?</strong></p>
-                    <p>We're interested in why people feel effortlessly engaged in some activities (such as engrossing video games),<br>
+                    <p>We're interested in why people feel effortlessly engaged in some activities (such as engrossing video games),
                     but struggle to focus on other activities (like tedious chores).</p>
-                    <p>To help us, you'll play two rounds of a game called <strong>Spin the Wheel</strong>.<br>
+                    <p>To help us, you'll play two rounds of a game called <strong>Spin the Wheel</strong>.
                     After each round, you'll report how immersed and engaged you felt.</p>
                     <p>When you're ready to learn about Spin the Wheel, continue to the next page.</p>`
                 },
@@ -258,7 +286,7 @@ const exp = (function() {
                 {
                     type: 'html',
                     prompt: `<p>In both rounds of Spin the Wheel, you'll spin a prize wheel to earn points.
-                        <br>The number of points you earn depends on where the wheel lands.</p>
+                        The number of points you earn depends on where the wheel lands.</p>
                         <p>Your goal is to earn as many points as possible across the two rounds!</p>`
                 },
             ],
@@ -266,14 +294,14 @@ const exp = (function() {
                 {
                     type: 'html',
                     prompt: `<p>Spinning a prize wheel is a two-step process.</p>
-                        <p>First, you must build momentum by repeatedly tapping the right arrow on your keyboard.</br>
+                        <p>First, you must build momentum by repeatedly tapping the right arrow on your keyboard.
                         Once you build enough momentum, you must press your spacebar to spin the wheel.</p>`
                 },
             ],
             [
                 {
                     type: 'html',
-                    prompt: `<p>In Round 1 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}.<br>${text.speed2_r1}</p>
+                    prompt: `<p>In Round 1 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>
                     <p>Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
                     <p>To practice Round 1, continue to the next page.</p>`,
                 },
@@ -297,7 +325,7 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>In Round 2 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r2}.<br>${text.speed2_r2}</p>
+                    prompt: `<p>In Round 2 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r2}. ${text.speed2_r2}</p>
                     <p>Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
                     <p>To practice Round 2, continue to the next page.</p>`,
                 }
