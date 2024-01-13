@@ -130,7 +130,6 @@ var jsPsychCanvasButtonResponse = (function (jspsych) {
               // gather the data to store for the trial
               var trial_data = {
                   outcomes: spinnerData.outcomes,
-                  pressTimes: spinnerData.pressTimes,
                   score: spinnerData.score,
                   rt: spinnerData.rt,
               };
