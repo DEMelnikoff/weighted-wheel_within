@@ -11,7 +11,7 @@ const exp = (function() {
         effortOrder: ['highEffort_first', 'highEffort_second'][Math.floor(Math.random() * 2)],
         miOrder: ['highMI_first', 'highMI_second'][miDraw],
         numOutcomes: [['4', '2'], ['2', '4']][miDraw],
-        pct: [['25% chance of winning 2 points, a 25% chance of winning 4 points, a 25% chance of winning 7 points, and a 25% chance of winning 10 points', '75% chance of winning 4 points and a 25% chance of winning 11 points'], ['75% chance of winning 4 points and a 25% chance of winning 11 points', '25% chance of winning 2 points, a 25% chance of winning 4 points, a 25% chance of winning 7 points, and a 25% chance of winning 10 points']][miDraw],
+        pct: [['25% chance of winning 2 tokens, a 25% chance of winning 4 tokens, a 25% chance of winning 7 tokens, and a 25% chance of winning 10 tokens', '75% chance of winning 4 tokens and a 25% chance of winning 11 tokens'], ['75% chance of winning 4 tokens and a 25% chance of winning 11 tokens', '25% chance of winning 2 tokens, a 25% chance of winning 4 tokens, a 25% chance of winning 7 tokens, and a 25% chance of winning 10 tokens']][miDraw],
         imgSrc: [['highMI.png', 'lowMI.png'], ['lowMI.png', 'highMI.png']][miDraw],
     };
 
@@ -68,7 +68,7 @@ const exp = (function() {
 
     function MakeAttnChk(settings, round) {
 
-        let correctAnswers = [`Earn as many points as possible.`, `5`];
+        let correctAnswers = [`Win as many tokens as possible.`, `5`];
 
         if (settings.effortOrder == 'highEffort_first' && round == 1 || settings.effortOrder == 'highEffort_second' && round == 2) {
             correctAnswers.push(`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`);
@@ -89,12 +89,12 @@ const exp = (function() {
                 </div>`,
             questions: [
                 {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>What is the goal of Spin the Wheel?</div>", 
+                    prompt: "<div style='color: rgb(109, 112, 114)'>What must you do to maximize your chances of winning a $100.00 bonus?</div>", 
                     name: `attnChk1`, 
-                    options: [`Earn as many points as possible.`, `Spin the wheel as fast as possible.`],
+                    options: [`Win as many tokens as possible.`, `Spin the wheel as fast as possible.`],
                 },
                 {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>How many points is it worth when the wheel lands on a 5?</div>", 
+                    prompt: "<div style='color: rgb(109, 112, 114)'>How many tokens is it worth when the wheel lands on a 5?</div>", 
                     name: `attnChk2`, 
                     options: [`0`, `5`, `10`],
                 },
@@ -168,11 +168,11 @@ const exp = (function() {
                         type: 'html',
                         prompt: function () {
                             if (round == 1) {
-                                return `<p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.
-                                Throughout both rounds, your current score will be displayed on a score board.</p>`
+                                return `<p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
+                                The more tokens you win, the better your chances of winning a $100.00 bonus. Throughout both rounds, your total number of tokens will be displayed on a score board.</p>`
                             } else {
-                                return `<p>Remember: your goal is to earn as many points as possible across the two rounds of Spin the Wheel.
-                                In Round 2, you will continue to add to your total score from Round 1.</p>`
+                                return `<p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
+                                The more tokens you win, the better your chances of winning a $100.00 bonus.</p>`
                             };
                         },
                     },
@@ -193,7 +193,7 @@ const exp = (function() {
                                 return `<p>You're now ready to play Round ${round} of Spin the Wheel.</p>
                                 <p>To play Round ${round}, continue to the next screen.</p>`
                             } else {
-                                return `<p>You're now ready to add to your total score by playing Round ${round} of Spin the Wheel.</p>
+                                return `<p>You're now ready to win more tokens by playing Round ${round} of Spin the Wheel.</p>
                                 <p>To play Round ${round}, continue to the next screen.</p>`
                             }
                         }
@@ -285,17 +285,25 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>In both rounds of Spin the Wheel, you'll spin a prize wheel to earn points.
-                        The number of points you earn depends on where the wheel lands.</p>
-                        <p>Your goal is to earn as many points as possible across the two rounds!</p>`
+                    prompt: `During Spin the Wheel, you'll be competing for a chance to win a <b>$100.00 bonus prize</b>.</p>
+                    <p>Specifically, throughout the game, you'll win tokens. The tokens you win will be entered into a lottery, and if one of your tokens is drawn, you'll win $100.00. To maximize your chances of winning a $100.00 bonus, you'll need to win as many tokens as possible.</p>
+                    <p>Continue to learn how to win tokens!</p>`
+                },
+            ],
+            [
+                {
+                    type: 'html',
+                    prompt: `<p>In both rounds of Spin the Wheel, you'll spin a prize wheel to win tokens.
+                    The number of tokens you win depends on where the wheel lands.</p>
+                    <p>The more tokens you win across the two rounds, the better your chances of winning a $100.00 bonus!</p>`
                 },
             ],
             [
                 {
                     type: 'html',
                     prompt: `<p>Spinning a prize wheel is a two-step process.</p>
-                        <p>First, you must build momentum by repeatedly tapping the right arrow on your keyboard.
-                        Once you build enough momentum, you must press your spacebar to spin the wheel.</p>`
+                    <p>First, you must build momentum by repeatedly tapping the right arrow on your keyboard.
+                    Once you build enough momentum, you must press your spacebar to spin the wheel.</p>`
                 },
             ],
             [
@@ -318,7 +326,7 @@ const exp = (function() {
                 {
                     type: 'html',
                     prompt: `<p>Round 1 of Spin the Wheel is now complete!</p>
-                    <p>Soon, you'll be able to add to your total score by playing Round 2</p>
+                    <p>Soon, you'll be able to win more tokens by playing Round 2</p>
                     <p>To learn about Round 2, continue to the next screen.</p>`
                 },
             ],
@@ -565,7 +573,7 @@ const exp = (function() {
                 let scoreArray = jsPsych.data.get().select('score').values;
                 let totalScore = scoreArray[scoreArray.length - 1];
                 return [`<div class='parent' style='color: rgb(109, 112, 114)'>
-                    <p>Spin the Wheel is now complete! You won a total of <strong>${totalScore}</strong> points!</p>
+                    <p>Spin the Wheel is now complete! You won a total of <strong>${totalScore}</strong> tokens!</p>
                     <p>To finish this study, please continue to answer a few final questions.</p>
                     </div>`];
             },  
