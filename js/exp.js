@@ -432,35 +432,35 @@ const exp = (function() {
 
         <p>Below are a few more questions about Round ${round} of Spin the Wheel.</p>
 
-        <p>Instead of asking about immersion and engagement, these questions ask about <strong>enjoyment</strong>.<br>
-        Report how much you <strong>enjoyed</strong> Round ${round} by answering the following questions.</p></div>`;
+        <p>Instead of asking about immersion and engagement, these questions ask about <b>enjoyment</b>.<br>
+        Report how much you <b>enjoyed</b> Round ${round} by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <strong>enjoy</strong> playing Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>enjoy</b> playing Round ${round} of Spin the Wheel?</div>`,
                 name: `enjoyable`,
                 labels: zeroToALot,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <strong>like</strong> playing Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>like</b> playing Round ${round} of Spin the Wheel?</div>`,
                 name: `like`,
                 labels: zeroToALot,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <strong>dislike</strong> playing Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>dislike</b> playing Round ${round} of Spin the Wheel?</div>`,
                 name: `dislike`,
                 labels: zeroToALot,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How much <strong>fun</strong> did you have playing Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How much <b>fun</b> did you have playing Round ${round} of Spin the Wheel?</div>`,
                 name: `fun`,
                 labels: zeroToALot,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>entertaining</strong> was Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>entertaining</b> was Round ${round} of Spin the Wheel?</div>`,
                 name: `entertaining`,
                 labels: zeroToExtremely,
                 required: true,
