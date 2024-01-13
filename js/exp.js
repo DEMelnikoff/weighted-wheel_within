@@ -390,29 +390,29 @@ const exp = (function() {
 
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
 
-        <p>During Round ${round}, to what extent did you feel immersed and engaged in what you were doing?<br>
+        <p>To what extent did you feel immersed and engaged in Round ${round} of Spin the Wheel?<br>
         Report the degree to which you felt immersed and engaged by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <strong>absorbed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>To what extent did you feel <b>absorbed</b> in Round ${round} of Spin the Wheel?</div>`,
                 name: `absorbed`,
                 labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <strong>immersed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>To what extent did you feel <b>immersed</b> in Round ${round} of Spin the Wheel?</div>`,
                 name: `immersed`,
                 labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <strong>engaged</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>To what extent did you feel <b>engaged</b> in Round ${round} of Spin the Wheel?</div>`,
                 name: `engaged`,
                 labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <strong>engrossed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>To what extent did you feel <b>engrossed</b> in Round ${round} of Spin the Wheel?</div>`,
                 name: `engrossed`,
                 labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
                 required: true,
