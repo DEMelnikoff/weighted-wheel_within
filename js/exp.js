@@ -512,7 +512,7 @@ const exp = (function() {
 
     // timeline: first wheel
     p.wheel_1 = {
-        timeline: [...practiceWheels_r1.timeline, attnChk1, wheel, new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1), new MakeScbQs(1)],
+        timeline: [...practiceWheels_r1.timeline, attnChk1, wheel, new MakeFlowQs(1), new MakeEnjoyQs(1)],
         timeline_variables: makeTimelineVariables(settings, 1),
     };
 
