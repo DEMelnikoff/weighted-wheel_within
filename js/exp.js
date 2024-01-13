@@ -390,29 +390,29 @@ const exp = (function() {
 
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
 
-        <p>To what extent did you feel immersed and engaged in Round ${round} of Spin the Wheel?<br>
+        <p>During Round ${round} of Spin the Wheel, how immersed and engaged did you feel in the game?<br>
         Report the degree to which you felt immersed and engaged by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>To what extent did you feel <b>absorbed</b> in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>absorbed</strong> did you feel in the game?</div>`,
                 name: `absorbed`,
                 labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>To what extent did you feel <b>immersed</b> in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>immersed</strong> did you feel in the game?</div>`,
                 name: `immersed`,
                 labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>To what extent did you feel <b>engaged</b> in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engaged</strong> did you feel in the game?</div>`,
                 name: `engaged`,
                 labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>To what extent did you feel <b>engrossed</b> in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engrossed</strong> did you feel in the game?</div>`,
                 name: `engrossed`,
                 labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
                 required: true,
@@ -544,6 +544,30 @@ const exp = (function() {
             show_clickable_nav: true,
             post_trial_gap: 500,
             allow_keys: false,
+        };
+
+        const freeResponse = {
+            type: jsPsychSurvey,
+            pages: [
+                [
+                    {
+                        type: 'multi-choice',
+                        prompt: `If you had to choose, which round of Spin the Wheel did you find most immersive and engaging?`,
+                        options: ['Round 1', 'Round 2'],
+                        name: 'forcedChoice',
+                    },
+                    {
+                        type: 'text',
+                        prompt: `In the space below, please explain your answer in as much detail as possible.`,
+                        textbox_rows: 7,
+                        name: 'explanation',
+                    },
+                ],
+            ],
+            button_label_finish: 'Next',
+            on_finish: (data) => {
+                dmPsych.saveSurveyData(data); 
+            },
         };
 
         const meanOfEffScale = ['-2<br>Strongly<br>Disagree', '-1<br>Disagree', '0<br>Neither agree<br>nor disagree', '1<br>Agree', '2<br>Strongly<br>Agree'];
@@ -685,7 +709,7 @@ const exp = (function() {
 
 
         const demos = {
-            timeline: [taskComplete, gender, age, ethnicity, english, finalWord]
+            timeline: [taskComplete, freeResponse, gender, age, ethnicity, english, finalWord]
         };
 
         return demos;
