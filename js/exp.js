@@ -385,6 +385,7 @@ const exp = (function() {
     // scales
     var zeroToExtremely = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>Extremely'];
     var zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>A lot'];
+    var scbScale = ['-5<br>Way too easy', '-4', '-3', '-2', '-1', '0<br>Neither too easy nor too hard', '1', '2', '3', '4', '5<br>Way too hard'];
 
     // constructor functions
     function MakeFlowQs(round) {
@@ -422,7 +423,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 800;
+        this.scale_width = 700;
         this.data = {round: round , mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
@@ -470,7 +471,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 800;
+        this.scale_width = 700;
         this.data = {round: round, mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
@@ -488,20 +489,20 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 500;
+        this.scale_width = 700;
         this.data = {round: round, mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);      
         };
     };
 
-    function MakeMeaningQs(round) {
+    function MakeScbQs(round) {
         this.type = jsPsychSurveyLikert;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>While playing Round ${round} of Spin the Wheel,<br>to what extent did you feel like you were doing something meaningful?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>Did you find Round ${round} of Spin the Wheel too easy, too hard, or right in the middle?</div>`,
                 name: `meaning`,
-                labels: zeroToALot,
+                labels: scbScale,
                 required: true,
             },
         ];
@@ -515,13 +516,13 @@ const exp = (function() {
 
     // timeline: first wheel
     p.wheel_1 = {
-        timeline: [...practiceWheels_r1.timeline, attnChk1, wheel, new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1), new MakeMeaningQs(1)],
+        timeline: [...practiceWheels_r1.timeline, attnChk1, wheel, new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1), new MakeScbQs(1)],
         timeline_variables: makeTimelineVariables(settings, 1),
     };
 
     // timeline: second wheel
     p.wheel_2 = {
-        timeline: [...practiceWheels_r2.timeline, attnChk2, wheel, new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeMeaningQs(2)],
+        timeline: [...practiceWheels_r2.timeline, attnChk2, wheel, new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2)],
         timeline_variables: makeTimelineVariables(settings, 2),
     };
 
