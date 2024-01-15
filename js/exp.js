@@ -406,6 +406,12 @@ const exp = (function() {
         Report the degree to which you felt immersed and engaged by answering the following questions.</p></div>`;
         this.questions = [
             {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>bored</strong> did you feel?</div>`,
+                name: `bored`,
+                labels: ["0<br>Not at all bored", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More bored than I've ever felt"],
+                required: true,
+            },
+            {
                 prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>absorbed</strong> did you feel in the game?</div>`,
                 name: `absorbed`,
                 labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
