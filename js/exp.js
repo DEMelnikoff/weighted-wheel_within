@@ -40,16 +40,16 @@ const exp = (function() {
         one: {color:"#fe0000", label:"1"},
         two: {color:"#800001", label:"2"},
         three: {color:"#fe6a00", label:"3"},
-        four: {color:"#803400", label:"4"},
+        four: {color:"#0026ff", label:"4"},
         five: {color:"#0094fe", label:"5"},
-        six: {color:"#806b00", label:"6"},
-        seven: {color:"#228B22", label:"7"},
-        eight: {color:"#007f0e", label:"8"},
+        six: {color:"#007f0e", label:"6"},
+        seven: {color:"#00497e", label:"7"},
+        eight: {color:"#b100fe", label:"8"},
         nine: {color:"#ffd800", label:"9"},
-        ten: {color:"#00497e", label:"10"},
-        eleven: {color:"#0026ff", label:"11"},
+        ten: {color:"#228B22", label:"10"},
+        eleven: {color:"#803400", label:"11"},
         twelve: {color:"#001280", label:"12"},
-        thirteen: {color:"#b100fe", label:"13"},
+        thirteen: {color:"#806b00", label:"13"},
     };
 
    /*
@@ -224,7 +224,7 @@ const exp = (function() {
             <p>Practice spinning by (1) tapping your right arrow ${speedText} and then (2) pressing your spacebar when the "Ready!" message appears.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.five, wedges.five], jsPsych.timelineVariable('targetPressTime'), [0], 1, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], jsPsych.timelineVariable('targetPressTime'), [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
             initialScore: function() {
@@ -246,7 +246,7 @@ const exp = (function() {
                 <p>Once you spin the wheel, you can stop tapping your right arrow.</p>
                 </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.five, wedges.five], jsPsych.timelineVariable('targetPressTime'), [0, 0, 0], 3, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], jsPsych.timelineVariable('targetPressTime'), [0, 0, 0], 3, scoreTracker_practice);
             },
             nSpins: 2,
             initialScore: function() {
@@ -275,10 +275,10 @@ const exp = (function() {
                 {   
                     type:'html',
                     prompt:`<p><strong>What makes some activities more immersive and engaging than others?</strong></p>
-                    <p>We're interested in why people feel effortlessly engaged in some activities (such as engrossing video games),
+                    <p>We're interested in why people feel completely immersed in some activities (such as engrossing video games),
                     but struggle to focus on other activities (like tedious chores).</p>
                     <p>To help us, you'll play two rounds of a game called <strong>Spin the Wheel</strong>.
-                    After each round, you'll report how immersed and engaged you felt.</p>
+                    After each round, you'll report how immersed and engrossed you felt.</p>
                     <p>When you're ready to learn about Spin the Wheel, continue to the next page.</p>`
                 },
             ],
@@ -365,12 +365,12 @@ const exp = (function() {
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi;
         if (settings.miOrder == 'highMI_first' && round == 1 || settings.miOrder == 'highMI_second' && round == 2) {
-            sectors = [ wedges.two, wedges.four, wedges.seven, wedges.ten ];
+            sectors = [ wedges.two, wedges.four, wedges.six, wedges.eight ];
             ev = 5.75;
             sd = 3.5;
             mi = 2;
         } else if (settings.miOrder == 'highMI_first' && round == 2 || settings.miOrder == 'highMI_second' && round == 1) {
-            sectors = [ wedges.four, wedges.four, wedges.four, wedges.eleven ];
+            sectors = [ wedges.three, wedges.three, wedges.seven, wedges.seven ];
             ev = 5.75;
             sd = 3.5;
             mi = .81;
