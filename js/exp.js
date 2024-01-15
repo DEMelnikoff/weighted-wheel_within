@@ -76,12 +76,6 @@ const exp = (function() {
             correctAnswers.push(`In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`);
         };
 
-        if (settings.miOrder == 'highMI_first' && round == 1 || settings.miOrder == 'highMI_second' && round == 2) {
-            correctAnswers.push(`In Round ${round}, I'll be spinning a wheel with 4 unique outcomes.`);
-        } else if (settings.miOrder == 'highMI_first' && round == 2 || settings.miOrder == 'highMI_second' && round == 1) {
-            correctAnswers.push(`In Round ${round}, I'll be spinning a wheel with 2 unique outcomes.`);
-        };
-
         const attnChk = {
            type: jsPsychSurveyMultiChoice,
             preamble: `<div class='parent' style='text-align: left; color: rgb(109, 112, 114)'>
@@ -102,11 +96,6 @@ const exp = (function() {
                     prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
                     name: `attnChk3`, 
                     options: [`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`, `In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`],
-                },
-                {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
-                    name: `attnChk4`, 
-                    options: [`In Round ${round}, I'll be spinning a wheel with 4 unique outcomes.`, `In Round ${round}, I'll be spinning a wheel with 2 unique outcomes.`],
                 },
             ],
             scale_width: 500,
@@ -151,27 +140,14 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: `<p><b>Practice is now complete!</b></p>
-                        <p>Continue to learn more about Round ${round} of Spin the Wheel.</p>`
-                    },
-                ],
-                [
-                    {
-                        type: 'html',
-                        prompt: `<p>Throughout Round ${round}, you'll spin the following wheel:</p>
-                        <img src="./img/${settings.imgSrc[round-1]}" height="300px" width="300px" style="display:block; margin: auto">
-                        <p>It has ${settings.numOutcomes[round-1]} unique outcomes. On each spin, you'll have a ${settings.pct[round-1]}.</p>`
-                    },
-                ],
-                [
-                    {
-                        type: 'html',
                         prompt: function () {
                             if (round == 1) {
-                                return `<p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
-                                The more tokens you win, the better your chances of winning a $100.00 bonus. Throughout both rounds, your total number of tokens will be displayed on a score board.</p>`
+                                return `<p><b>Practice is now complete!</b></p>
+                                <p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
+                                The more tokens you win, the better your chances of winning a $100.00 bonus.</p>
+                                <p>Throughout both rounds, your total number of tokens will be displayed on a score board.</p>`
                             } else {
-                                return `<p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
+                                return `<p><b>Practice is now complete!</b></p><p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
                                 The more tokens you win, the better your chances of winning a $100.00 bonus.</p>`
                             };
                         },
