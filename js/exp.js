@@ -402,6 +402,41 @@ const exp = (function() {
 
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
 
+        <p>During Round ${round} of Spin the Wheel, did you feel bored or were you "in the zone" and "lost" in what you were doing?
+        Report how you felt by answering the following questions.</p></div>`;
+        this.questions = [
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, I felt really bored.</div>`,
+                name: `bored`,
+                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                required: true,
+            },
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, I felt so "in the zone" that I lost track of time.</div>`,
+                name: `inTheZone`,
+                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                required: true,
+            },
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, I lost myself in what I was doing.</div>`,
+                name: `lostMyself`,
+                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                required: true,
+            },
+        ];
+        this.randomize_question_order = false;
+        this.scale_width = 700;
+        this.data = {round: round , mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
+        this.on_finish = (data) => {
+            dmPsych.saveSurveyData(data);
+        };
+    };
+    function MakeFlowQs(round) {
+        this.type = jsPsychSurveyLikert;
+        this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
+
+        <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
+
         <p>During Round ${round} of Spin the Wheel, how immersed and engaged did you feel in the game?<br>
         Report the degree to which you felt immersed and engaged by answering the following questions.</p></div>`;
         this.questions = [
