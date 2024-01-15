@@ -431,53 +431,6 @@ const exp = (function() {
             dmPsych.saveSurveyData(data);
         };
     };
-    function MakeFlowQs(round) {
-        this.type = jsPsychSurveyLikert;
-        this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
-
-        <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
-
-        <p>During Round ${round} of Spin the Wheel, how immersed and engaged did you feel in the game?<br>
-        Report the degree to which you felt immersed and engaged by answering the following questions.</p></div>`;
-        this.questions = [
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>bored</strong> did you feel?</div>`,
-                name: `bored`,
-                labels: ["0<br>Not at all bored", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More bored than I've ever felt"],
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>absorbed</strong> did you feel in the game?</div>`,
-                name: `absorbed`,
-                labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>immersed</strong> did you feel in the game?</div>`,
-                name: `immersed`,
-                labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engaged</strong> did you feel in the game?</div>`,
-                name: `engaged`,
-                labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engrossed</strong> did you feel in the game?</div>`,
-                name: `engrossed`,
-                labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
-                required: true,
-            },
-        ];
-        this.randomize_question_order = false;
-        this.scale_width = 700;
-        this.data = {round: round , mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
-        this.on_finish = (data) => {
-            dmPsych.saveSurveyData(data);
-        };
-    };
 
     function MakeEnjoyQs(round) {
         this.type = jsPsychSurveyLikert;
