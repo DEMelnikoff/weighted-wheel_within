@@ -38,11 +38,11 @@ const exp = (function() {
     // define each wedge
     const wedges = {
         one: {color:"#fe0000", label:"1"},
-        two: {color:"#800001", label:"2"},
+        two: {color:"#0026ff", label:"2"},
         three: {color:"#fe6a00", label:"3"},
-        four: {color:"#0026ff", label:"4"},
+        four: {color:"#007f0e", label:"4"},
         five: {color:"#0094fe", label:"5"},
-        six: {color:"#007f0e", label:"6"},
+        six: {color:"#800001", label:"6"},
         seven: {color:"#00497e", label:"7"},
         eight: {color:"#b100fe", label:"8"},
         nine: {color:"#ffd800", label:"9"},
@@ -68,7 +68,7 @@ const exp = (function() {
 
     function MakeAttnChk(settings, round) {
 
-        let correctAnswers = [`Win as many tokens as possible.`, `5`];
+        let correctAnswers = [`Win as many tokens as possible.`, `10`];
 
         if (settings.effortOrder == 'highEffort_first' && round == 1 || settings.effortOrder == 'highEffort_second' && round == 2) {
             correctAnswers.push(`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`);
@@ -88,7 +88,7 @@ const exp = (function() {
                     options: [`Win as many tokens as possible.`, `Spin the wheel as fast as possible.`],
                 },
                 {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>How many tokens is it worth when the wheel lands on a 5?</div>", 
+                    prompt: `<div style='color: rgb(109, 112, 114)'>In Round ${round}, how many times will you spin the wheel?</div>`, 
                     name: `attnChk2`, 
                     options: [`0`, `5`, `10`],
                 },
@@ -140,20 +140,12 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: function () {
-                            if (round == 1) {
-                                return `<p><b>Practice is now complete!</b></p>
-                                <p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
-                                The more tokens you win, the better your chances of winning a $100.00 bonus.</p>
-                                <p>Throughout both rounds, your total number of tokens will be displayed on a score board.</p>`
-                            } else {
-                                return `<p><b>Practice is now complete!</b></p><p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
-                                The more tokens you win, the better your chances of winning a $100.00 bonus.</p>`
-                            };
-                        },
+                        prompt: `<p><b>Practice is now complete!</b></p>
+                        <p>Next, you'll play Round ${round} of Spin the Wheel. In Round ${round}, you'll spin the wheel a total of <b>10 times</b>.</p>
+                        <p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
+                        The more tokens you win, the better your chances of winning a $100.00 bonus.</p>`
                     },
                 ],
-
             ],
             button_label_finish: 'Next',
         };
@@ -341,12 +333,12 @@ const exp = (function() {
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi;
         if (settings.miOrder == 'highMI_first' && round == 1 || settings.miOrder == 'highMI_second' && round == 2) {
-            sectors = [ wedges.two, wedges.four, wedges.six, wedges.eight ];
+            sectors = [ wedges.two, wedges.three, wedges.four, wedges.eight ];
             ev = 5.75;
             sd = 3.5;
             mi = 2;
         } else if (settings.miOrder == 'highMI_first' && round == 2 || settings.miOrder == 'highMI_second' && round == 1) {
-            sectors = [ wedges.three, wedges.three, wedges.seven, wedges.seven ];
+            sectors = [ wedges.three, wedges.three, wedges.three, wedges.eight ];
             ev = 5.75;
             sd = 3.5;
             mi = .81;
@@ -402,25 +394,31 @@ const exp = (function() {
 
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
 
-        <p>During Round ${round} of Spin the Wheel, did you feel bored or were you "in the zone" and "lost" in what you were doing?
-        Report how you felt by answering the following questions.</p></div>`;
+        <p>During Round ${round} of Spin the Wheel, to what extent did you feel <b>immersed</b> and <b>engaged</b> in what you were doing?
+        Report how immersed and engaged you felt by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, I felt really bored.</div>`,
-                name: `bored`,
-                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>absorbed</strong> did you feel in what you were doing?</div>`,
+                name: `absorbed`,
+                labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, I felt so "in the zone" that I lost track of time.</div>`,
-                name: `inTheZone`,
-                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>immersed</strong> did you feel in what you were doing?</div>`,
+                name: `immersed`,
+                labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, I lost myself in what I was doing.</div>`,
-                name: `lostMyself`,
-                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engaged</strong> did you feel in what you were doing?</div>`,
+                name: `engaged`,
+                labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
+                required: true,
+            },
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engrossed</strong> did you feel in what you were doing?</div>`,
+                name: `engrossed`,
+                labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
                 required: true,
             },
         ];

@@ -444,6 +444,9 @@ const dmPsych = (function() {
     /* get score message */
     const scoreMsg = document.getElementById("score");
 
+    /* get total spins */
+    const totalSpinsMsg = document.getElementById("totalSpins");
+
     /* get wheel properties */
     let wheelWidth = canvas.getBoundingClientRect()['width'];
     let wheelHeight = canvas.getBoundingClientRect()['height'];
@@ -473,6 +476,7 @@ const dmPsych = (function() {
     let nSpeedUp = 0;            // number of frames over which the wheel has accelerated
     let nSlowDown = 0;           // number of frames over which the wheel has decelerated
     let score = initialScore;
+    let totalSpins = 0
 
     /* press rate variables */
     let keydown = false;
@@ -629,6 +633,7 @@ const dmPsych = (function() {
           spinnerData.pressTimes.push(pressTimes);
           pressTimes = [];
           window.cancelAnimationFrame(req_spin);
+          totalSpins++;
         };
       };
     };
@@ -642,6 +647,7 @@ const dmPsych = (function() {
       scoreMsg.innerHTML = `<span style="color:${color}; font-weight: bolder">${score}</span>`;
       setTimeout(() => {
         scoreMsg.innerHTML = `${score}`
+        totalSpinsMsg.innerHTML = (totalSpins !== 9) ? `(${10 - totalSpins} spins remaining)` : `(${10 - totalSpins} spin remaining)`
         isSpinning = false;
         pointer.style.font = '1.2rem/0 sans-serif';
         pointer.textContent = '';

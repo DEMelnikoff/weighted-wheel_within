@@ -611,14 +611,20 @@
 
 .score-board-title {
   position: absolute;
-  top: 20px;
+  top: 10px;
   font-size:25px;
 }
 
 .score-board-score {
   position: absolute;
-  top: 70px;
-  font-size:40px;
+  top: 45px;
+  font-size:35px;
+}
+
+.score-board-spins {
+  position: absolute;
+  top: 85px;
+  font-size:25px;
 }
 
 .parent {
