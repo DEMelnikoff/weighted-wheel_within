@@ -556,7 +556,7 @@ const exp = (function() {
                 [
                     {
                         type: 'multi-choice',
-                        prompt: `If you had to choose, which round of Spin the Wheel did you find most boring?`,
+                        prompt: `If you had to choose, which round of Spin the Wheel did you find most immersive and engaging?`,
                         options: ['Round 1', 'Round 2'],
                         name: 'forcedChoice',
                     },
