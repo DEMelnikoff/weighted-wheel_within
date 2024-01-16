@@ -187,9 +187,9 @@ const exp = (function() {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
             <p>Repeatedly tap your right arrow ${speedText} to build momentum.
-            Once you build enough momentum, you'll see a "Ready!" message at the center of the wheel,
-            which means you can spin the wheel by pressing your spacebar. Once you spin the wheel, you can stop tapping your right arrow.</p>
-            <p>Practice spinning by (1) tapping your right arrow ${speedText} and then (2) pressing your spacebar when the "Ready!" message appears.</p>
+            Once you build enough momentum, you'll see a "Spinning!" message at the center of the wheel,
+            which means that the wheel is spinning on its own and you can stop tapping your right arrow.</p>
+            <p>Practice spinning by tapping your right arrow ${speedText} until the "Spinning!" message appears.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
                 dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], jsPsych.timelineVariable('targetPressTime'), [0], 1, scoreTracker_practice);
@@ -210,8 +210,7 @@ const exp = (function() {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
                 <p>Great job! Now, spin the wheel a few more time to get the hang of it. Remember:</p>
-                <p>Spin the wheel by (1) tapping your right arrow ${speedText} and then (2) pressing your spacebar when the "Ready!" message appears.</p>
-                <p>Once you spin the wheel, you can stop tapping your right arrow.</p>
+                <p>Spin the wheel by tapping your right arrow ${speedText} until the "Spinning!" message appears.</p>
                 </div>`,
             stimulus: function(c, spinnerData) {
                 dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], jsPsych.timelineVariable('targetPressTime'), [0, 0, 0], 3, scoreTracker_practice);
@@ -269,16 +268,15 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>Spinning a prize wheel is a two-step process.</p>
-                    <p>First, you must build momentum by repeatedly tapping the right arrow on your keyboard.
-                    Once you build enough momentum, you must press your spacebar to spin the wheel.</p>`
+                    prompt: `<p>To spin a prize wheel, you must build up enough momentum.</p>
+                    <p>To build momentum, you must repeatedly tap the right arrow on your keyboard.</p>`
                 },
             ],
             [
                 {
                     type: 'html',
                     prompt: `<p>In Round 1 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>
-                    <p>Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
+                    <p>Once you build enough momentum, the wheel will spin automatically.</p>
                     <p>To practice Round 1, continue to the next page.</p>`,
                 },
             ],
@@ -302,7 +300,7 @@ const exp = (function() {
                 {
                     type: 'html',
                     prompt: `<p>In Round 2 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r2}. ${text.speed2_r2}</p>
-                    <p>Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
+                    <p>Once you build enough momentum, the wheel will spin automatically.</p>
                     <p>To practice Round 2, continue to the next page.</p>`,
                 }
             ]
