@@ -520,7 +520,7 @@ const dmPsych = (function() {
           lastPressTime = performance.now();
         };
       };
-      if (e.key == " " || e.code == "Space" || e.keyCode == 32) { 
+      /*if (e.key == " " || e.code == "Space" || e.keyCode == 32) { 
         if (!isSpinning & readyToSpin) {
           isAccelerating = true;
           isSpinning = true;
@@ -528,7 +528,7 @@ const dmPsych = (function() {
           vel_max_rand = rand(vel_max + 180, vel_max - 30);
           spin()
         };
-      };
+      };*/
     });
 
     // listen for keyup
@@ -554,6 +554,13 @@ const dmPsych = (function() {
         pointer.textContent = '';
         pointer.style.background = 'white';
       };
+      if (!isSpinning & readyToSpin) {
+          isAccelerating = true;
+          isSpinning = true;
+          readyToSpin = false;
+          vel_max_rand = rand(vel_max + 180, vel_max - 30);
+          spin()
+      };
     };
 
     const slowDown = () => {
@@ -571,6 +578,13 @@ const dmPsych = (function() {
         pointer.style.background = 'white';
       };
       render(currentAngle);
+      if (!isSpinning & readyToSpin) {
+          isAccelerating = true;
+          isSpinning = true;
+          readyToSpin = false;
+          vel_max_rand = rand(vel_max + 180, vel_max - 30);
+          spin()
+      };
     };
 
     const render = (deg) => {
