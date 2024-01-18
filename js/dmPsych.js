@@ -640,10 +640,11 @@ const dmPsych = (function() {
           spinnerData.outcomes.push(parseFloat(sector.label));
           drawSector(sectors, getIndex());
           updateScore(parseFloat(sector.label), sector.color);
-          pointer.style.font = '2rem/0 sans-serif';
-          pointer.textContent = sector.label;
-          pointer.style.background = sector.color;
+          //pointer.style.font = '2rem/0 sans-serif';
+          //pointer.textContent = sector.label;
+          //pointer.style.background = sector.color;
           pressTimes.shift();
+          spinnerData.color = sector.color;
           spinnerData.pressTimes.push(pressTimes);
           pressTimes = [];
           window.cancelAnimationFrame(req_spin);

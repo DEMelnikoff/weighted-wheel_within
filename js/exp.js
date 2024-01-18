@@ -141,9 +141,50 @@ const exp = (function() {
                     {
                         type: 'html',
                         prompt: `<p><b>Practice is now complete!</b></p>
-                        <p>Next, you'll play Round ${round} of Spin the Wheel. In Round ${round}, you'll spin the wheel a total of <b>10 times</b>.</p>
-                        <p>Remember: your goal is to win as many tokens as possible across the two rounds of Spin the Wheel.
-                        The more tokens you win, the better your chances of winning a $100.00 bonus.</p>`
+                        <p>Continue to learn more about Round ${round} of Spin the Wheel.</p>`
+                    },
+                ],
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>In Round 1 of Spin the Wheel, the number of tokens you win for each spin depends on where the wheel lands. For example, if the wheel lands on a 3, you'll earn 3 tokens.</p>`
+                    },
+                ],
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>After each spin, you'll see a message indicating how many tokens you won. For example, after landing on a 3, you'd see this message indiciating that you won 3 tokens:</p>
+                        <div class="play-area-inst">               
+                            <div class="win-text-inst" style="color:#fe6a00">+3 Tokens</div>
+                        </div>`
+                    },
+                ],
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>In addition to earning tokens through spinning, you can gain or lose tokens randomly.
+                        Specifically, after each spin, you have a 20% chance of winning 5 extra tokens, and a 20% chance of losing 5 tokens.</p>`,
+
+                    },
+                ],
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>If you see "+5 Bonus," this means you randomly won 5 extra tokens. For example, this is what you'd see if you randomly won 5 extra tokens after landing on a 3:</p>
+                        <div class="play-area-inst">               
+                            <div class="win-text-inst" style="color:#fe6a00">+3 Tokens</div>
+                            <div class="plus-text-inst">+5 Bonus</div>
+                        </div>`,
+                    },
+                ],
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>If you see "-5 Loss," this means you randomly lost 5 tokens. For example, this is what you'd see if you randomly lost 5 tokens after landing on a 3:</p>
+                        <div class="play-area-inst">               
+                            <div class="win-text-inst" style="color:#fe6a00">+3 Tokens</div>
+                            <div class="minus-text-inst">-5 Loss</div>
+                        </div>`
                     },
                 ],
             ],
@@ -175,13 +216,17 @@ const exp = (function() {
         this.timeline = [practiceComplete, instLoop, readyToPlay];
     }
 
-    let scoreTracker_practice = 0; // track current score
-    let scoreTracker = 0; // track current score
-
 
     function MakePracticeWheel(text, round) {
 
         let speedText = (round == 1) ? text.speed1_r1 : text.speed1_r2;
+
+        let targetPressTime;
+        if (settings.effortOrder == 'highEffort_first' && round == 1 || settings.effortOrder == 'highEffort_second' && round == 2) {
+            targetPressTime = [0, .2];
+        } else if (settings.effortOrder == 'highEffort_first' && round == 2 || settings.effortOrder == 'highEffort_second' && round == 1) {
+            targetPressTime = [.2, .75];
+        };
 
         const practiceWheel_1 = {
             type: jsPsychCanvasButtonResponse,
@@ -192,7 +237,7 @@ const exp = (function() {
             <p>Practice spinning by tapping your right arrow ${speedText} until the "Spinning!" message appears.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], jsPsych.timelineVariable('targetPressTime'), [0], 1, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], targetPressTime, [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
             initialScore: function() {
@@ -213,7 +258,7 @@ const exp = (function() {
                 <p>Spin the wheel by tapping your right arrow ${speedText} until the "Spinning!" message appears.</p>
                 </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], jsPsych.timelineVariable('targetPressTime'), [0, 0, 0], 3, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
             },
             nSpins: 2,
             initialScore: function() {
@@ -260,15 +305,8 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>In both rounds of Spin the Wheel, you'll spin a prize wheel to win tokens.
-                    The number of tokens you win depends on where the wheel lands.</p>
-                    <p>The more tokens you win across the two rounds, the better your chances of winning a $100.00 bonus!</p>`
-                },
-            ],
-            [
-                {
-                    type: 'html',
-                    prompt: `<p>To spin a prize wheel, you must build up enough momentum.</p>
+                    prompt: `<p>In both rounds of Spin the Wheel, you'll win tokens by spinning a prize wheel.</p>
+                    <p>To spin a prize wheel, you must build up enough momentum.</p>
                     <p>To build momentum, you must repeatedly tap the right arrow on your keyboard.</p>`
                 },
             ],
@@ -323,10 +361,11 @@ const exp = (function() {
     *
     */
 
-    function makeTimelineVariables(settings, round) {
 
-        // array indiciating whether or not the outcome of each spin is guaranteed
-        let guaranteedOutcome = new Array(settings.nSpins).fill(0);
+    let scoreTracker_practice = 0; // track current score
+    let scoreTracker = 0; // track current score
+
+    const MakeSpinLoop = function(round) {
 
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi;
@@ -350,28 +389,65 @@ const exp = (function() {
             targetPressTime = [.2, .75];
         };
 
-        let timelineVariables = [{round: round, sectors: sectors, mi: mi, ev: ev, sd: sd, targetPressTime: targetPressTime, guaranteedOutcome: guaranteedOutcome}];
+        this.timeline_variables = [{round: round, sectors: sectors, mi: mi, ev: ev, sd: sd, targetPressTime: targetPressTime, guaranteedOutcome: 0}];
 
-        return timelineVariables;
-    };
+        const makeTokenArray = function() {
+            return jsPsych.randomization.repeat(['plus', 'minus', 'normal', 'normal', 'normal'], 1);
+        };
 
-    const wheel = {
-        type: jsPsychCanvasButtonResponse,
-        stimulus: function(c, spinnerData) {
-            dmPsych.spinner(c, spinnerData, jsPsych.timelineVariable('sectors'), jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), settings.nSpins, scoreTracker);
-        },
-        nSpins: settings.nSpins,
-        initialScore: function() {
-            return scoreTracker;
-        },
-        canvas_size: [500, 500],
-        show_scoreboard: true,
-        post_trial_gap: 1000,
-        data: {round: jsPsych.timelineVariable('round'), mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
-        on_finish: function(data) {
-            scoreTracker = data.score;
-        },
-    };
+        let tokenArray = makeTokenArray();
+        let outcome, color, bonusType;
+        let currentStreak = 0;
+        let finalStreak = 0;
+        let trial = 1;
+
+        const wheel = {
+            type: jsPsychCanvasButtonResponse,
+            stimulus: function(c, spinnerData) {
+                dmPsych.spinner(c, spinnerData, jsPsych.timelineVariable('sectors'), jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), 1, scoreTracker);
+            },
+            nSpins: 1,
+            initialScore: function() {
+                return scoreTracker;
+            },
+            canvas_size: [500, 500],
+            show_scoreboard: false,
+            data: {round: jsPsych.timelineVariable('round'), mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
+            on_finish: function(data) {
+                scoreTracker = data.score;
+                outcome = data.outcomes[0];
+                color = data.color;
+            },
+        };
+
+        const tokens = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: function() {
+                bonusType = tokenArray.pop();
+                const extraOutcome = (bonusType == 'plus') ? '<div class="plus-text">+5 Bonus</div>' : (bonusType == 'minus') ? '<div class="minus-text">-5 Loss</div>' : '';
+                const feedback = `<div class="play-area"> <div class="win-text" style="color:${color}">+${outcome} Tokens</div> ${extraOutcome} </div>`;
+                return feedback;
+            },
+            choices: "NO_KEYS",
+            trial_duration: 2000,
+            data: {round: jsPsych.timelineVariable('round'), mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
+            on_finish: function() {
+                if (tokenArray.length == 0) {
+                    tokenArray = makeTokenArray();
+                };
+                if (bonusType == 'plus') {
+                    scoreTracker++;
+                } else if (bonusType == 'minus') {
+                    scoreTracker--;
+                }
+                console.log(scoreTracker);
+            },
+        };
+
+        this.timeline = [wheel, tokens];
+        this.repetitions = settings.nSpins;
+    }
+
 
 
    /*
@@ -422,7 +498,7 @@ const exp = (function() {
         ];
         this.randomize_question_order = false;
         this.scale_width = 700;
-        this.data = {round: round , mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
+        this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
         };
@@ -470,7 +546,7 @@ const exp = (function() {
         ];
         this.randomize_question_order = false;
         this.scale_width = 700;
-        this.data = {round: round, mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
+        this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
         };
@@ -488,7 +564,7 @@ const exp = (function() {
         ];
         this.randomize_question_order = false;
         this.scale_width = 700;
-        this.data = {round: round, mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
+        this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);      
         };
@@ -506,7 +582,7 @@ const exp = (function() {
         ];
         this.randomize_question_order = false;
         this.scale_width = 700;
-        this.data = {round: round, mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')};
+        this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);      
         };
@@ -514,15 +590,14 @@ const exp = (function() {
 
     // timeline: first wheel
     p.wheel_1 = {
-        timeline: [...practiceWheels_r1.timeline, attnChk1, wheel, new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1), new MakeScbQs(1)],
-        timeline_variables: makeTimelineVariables(settings, 1),
+        timeline: [...practiceWheels_r1.timeline, attnChk1, new MakeSpinLoop(1), new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1), new MakeScbQs(1)],
     };
 
     // timeline: second wheel
     p.wheel_2 = {
-        timeline: [...practiceWheels_r2.timeline, attnChk2, wheel, new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2)],
-        timeline_variables: makeTimelineVariables(settings, 2),
+        timeline: [...practiceWheels_r2.timeline, attnChk2, new MakeSpinLoop(2), new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2)],
     };
+
 
    /*
     *

@@ -638,3 +638,89 @@
   text-align: left;
 }
 
+.play-area {
+    position: relative;
+    width: 800px; 
+    height: 550px;
+    text-align: center; 
+}
+
+.win-text {
+    position: absolute;
+    top: 40%; 
+    left: 50%; 
+    width: 600px;
+    transform: translate(-50%, -50%); 
+    font-size: 70px;
+    font-weight: bold;
+    color: green;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+}
+
+.plus-text {
+    position: absolute;
+    top: 60%; 
+    left: 50%; 
+    width: 600px;
+    transform: translate(-50%, -50%); 
+    font-size: 70px;
+    font-weight: bold;
+    color: yellow;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+}
+
+.minus-text {
+    position: absolute;
+    top: 60%; 
+    left: 50%; 
+    width: 600px;
+    transform: translate(-50%, -50%); 
+    font-size: 70px;
+    font-weight: bold;
+    color: red;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+  }
+
+.play-area-inst {
+    position: relative;
+    width: 500px; 
+    height: 375px;
+    text-align: center; 
+    left: 50%;
+    transform: translate(-50%, 0%);
+    margin-top: 50px;
+}
+
+
+.win-text-inst {
+    position: absolute;
+    top: 40%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 45px;
+    font-weight: bold;
+    color: green;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+}
+
+.plus-text-inst {
+  position: absolute;
+  top: 60%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  font-size: 45px;
+  font-weight: bold;
+  color: yellow;
+  text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+}
+
+.minus-text-inst {
+  position: absolute;
+  top: 60%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  font-size: 45px;
+  font-weight: bold;
+  color: red;
+  text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+}
