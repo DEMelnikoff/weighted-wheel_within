@@ -510,7 +510,7 @@ const exp = (function() {
 
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
 
-        <p>While playing Round ${round} of Spin the Wheel, to what extent did you feel <b>immersed</b> and <b>engaged</b>?
+        <p>While playing Round ${round} of Spin the Wheel, to what extent did you feel <b>immersed</b> and <b>engaged</b>?<br>
         Report how immersed and engaged you felt by answering the following questions.</p></div>`;
         this.questions = [
             {
