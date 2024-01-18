@@ -502,6 +502,7 @@ const exp = (function() {
     var zeroToExtremely = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>Extremely'];
     var zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>A lot'];
     var scbScale = ['-5<br>Way too easy', '-4', '-3', '-2', '-1', '0<br>Neither too easy nor too hard', '1', '2', '3', '4', '5<br>Way too hard'];
+    var agreeDisagree = ['-5<br>Completely Disagree', '-4', '-3', '-2', '-1', '0<br>Neither agree nor disagree', '1', '2', '3', '4', '5<br>Completely Agree'];
 
     // constructor functions
     function MakeFlowQs(round) {
@@ -516,31 +517,31 @@ const exp = (function() {
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>I found Round ${round} really boring.</div>`,
                 name: `boring`,
-                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                labels: agreeDisagree,
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, time seemed to fly by.</div>`,
                 name: `time`,
-                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                labels: agreeDisagree,
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>Staying focused on Round ${round} was a struggle.</div>`,
                 name: `focusIsStruggle`,
-                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                labels: agreeDisagree,
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, I could easily ignore external distractions.</div>`,
                 name: `easilyIgnore`,
-                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                labels: agreeDisagree,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, the world outside the game seemed to disappear.</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, everything outside the game seemed to disappear.</div>`,
                 name: `disappear`,
-                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                labels: agreeDisagree,
                 required: true,
             },
         ];
