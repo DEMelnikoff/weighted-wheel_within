@@ -68,7 +68,7 @@ const exp = (function() {
 
     function MakeAttnChk(settings, round) {
 
-        let correctAnswers = [`Win as many tokens as possible.`, `10`];
+        let correctAnswers = [`Win as many tokens as possible.`, `10`, `20%`, `20%`];
 
         if (settings.effortOrder == 'highEffort_first' && round == 1 || settings.effortOrder == 'highEffort_second' && round == 2) {
             correctAnswers.push(`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`);
@@ -93,8 +93,18 @@ const exp = (function() {
                     options: [`0`, `5`, `10`],
                 },
                 {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
+                    prompt: "<div style='color: rgb(109, 112, 114)'>After each spin, what are your chances of randomly winning 5 extra tokens?</div>", 
                     name: `attnChk3`, 
+                    options: [`0%`, `20%`, `100%`],
+                },
+                {
+                    prompt: "<div style='color: rgb(109, 112, 114)'>After each spin, what are your chances of randomly losing 5 tokens?</div>", 
+                    name: `attnChk4`, 
+                    options: [`0%`, `20%`, `100%`],
+                },
+                {
+                    prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
+                    name: `attnChk5`, 
                     options: [`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`, `In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`],
                 },
             ],
@@ -134,7 +144,7 @@ const exp = (function() {
           },
         };
 
-        const practiceComplete = {
+        const practiceComplete_1 = {
             type: jsPsychSurvey,
             pages: [
                 [
@@ -153,7 +163,7 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: `<p>After each spin, you'll see a message indicating how many tokens you won. For example, after landing on a 3, you'd see this message indiciating that you won 3 tokens:</p>
+                        prompt: `<p>After each spin, you'll see a message indicating how many tokens you won. For example, after landing on a 3, you'd see this message indicating that you won 3 tokens:</p>
                         <div class="play-area-inst">               
                             <div class="win-text-inst" style="color:#fe6a00">+3 Tokens</div>
                         </div>`
@@ -187,10 +197,31 @@ const exp = (function() {
                         </div>`
                     },
                 ],
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>In Round ${round} of Spin the Wheel, you'll spin the wheel a total of <b>10 times</b>.</p>`
+                    },
+                ],
             ],
             button_label_finish: 'Next',
         };
 
+        const practiceComplete_2 = {
+            type: jsPsychSurvey,
+            pages: [
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p><b>Practice is now complete!</b></p>
+                        <p>The rules of Round ${round} of Spin the Wheel are identical to the rules of Round 1: 
+                        You'll spin the wheel a total of 10 times, and after each spin, you'll have a 20% chance of winning 5 extra tokens and a 20% chance of losing 5 tokens.</p>`,
+
+                    },
+                ],
+            ],
+            button_label_finish: 'Next',
+        };
         const readyToPlay = {
             type: jsPsychSurvey,
             pages: [
@@ -213,7 +244,7 @@ const exp = (function() {
             button_label_finish: 'Next',
         };
 
-        this.timeline = [practiceComplete, instLoop, readyToPlay];
+        this.timeline = (round == 1) ? [practiceComplete_1, instLoop, readyToPlay] : [practiceComplete_2, instLoop, readyToPlay];
     }
 
 
@@ -370,12 +401,12 @@ const exp = (function() {
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi;
         if (settings.miOrder == 'highMI_first' && round == 1 || settings.miOrder == 'highMI_second' && round == 2) {
-            sectors = [ wedges.two, wedges.three, wedges.four, wedges.eight ];
+            sectors = jsPsych.randomization.repeat([ wedges.two, wedges.three, wedges.four, wedges.eight ], 1);
             ev = 5.75;
             sd = 3.5;
             mi = 2;
         } else if (settings.miOrder == 'highMI_first' && round == 2 || settings.miOrder == 'highMI_second' && round == 1) {
-            sectors = [ wedges.three, wedges.three, wedges.three, wedges.eight ];
+            sectors = jsPsych.randomization.repeat([ wedges.three, wedges.three, wedges.three, wedges.eight ], 1);
             ev = 5.75;
             sd = 3.5;
             mi = .81;
@@ -468,29 +499,29 @@ const exp = (function() {
 
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
 
-        <p>During Round ${round} of Spin the Wheel, to what extent did you feel <b>immersed</b> and <b>engaged</b> in what you were doing?
+        <p>While playing Round ${round} of Spin the Wheel, to what extent did you feel <b>immersed</b> and <b>engaged</b>?
         Report how immersed and engaged you felt by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>absorbed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>absorbed</strong> did you feel in Round ${round} of Spin the Wheel?</div>`,
                 name: `absorbed`,
                 labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>immersed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>immersed</strong> did you feel in Round ${round} of Spin the Wheel?</div>`,
                 name: `immersed`,
                 labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engaged</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>engaged</strong> did you feel in Round ${round} of Spin the Wheel?</div>`,
                 name: `engaged`,
                 labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engrossed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>engrossed</strong> did you feel in Round ${round} of Spin the Wheel?</div>`,
                 name: `engrossed`,
                 labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
                 required: true,
