@@ -559,7 +559,7 @@ const exp = (function() {
 
         <p>Below are a few more questions about Round ${round} of Spin the Wheel.</p>
 
-        <p>These questions ask about <b>enjoyment</b>.
+        <p>These questions ask about <b>enjoyment</b>.<br>
         Report how much you <b>enjoyed</b> Round ${round} by answering the following questions.</p></div>`;
         this.questions = [
             {
@@ -678,7 +678,7 @@ const exp = (function() {
                 [
                     {
                         type: 'multi-choice',
-                        prompt: `If you had to choose, which round of Spin the Wheel did you find most immersive and engaging?`,
+                        prompt: `If you had to choose, which round of Spin the Wheel did you find most boring?`,
                         options: ['Round 1', 'Round 2'],
                         name: 'forcedChoice',
                     },
