@@ -515,31 +515,31 @@ const exp = (function() {
         this.questions = [
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>I found Round ${round} really boring.</div>`,
-                name: `absorbed`,
+                name: `boring`,
                 labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, time seemed to fly by.</div>`,
-                name: `absorbed`,
+                name: `time`,
                 labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>Staying focused on Round ${round} was a struggle.</div>`,
-                name: `engaged`,
+                name: `focusIsStruggle`,
                 labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, I could easily ignore external distractions.</div>`,
-                name: `immersed`,
+                name: `easilyIgnore`,
                 labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, the world outside the game seemed to disappear.</div>`,
-                name: `immersed`,
+                name: `disappear`,
                 labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
