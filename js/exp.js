@@ -510,31 +510,37 @@ const exp = (function() {
 
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
 
-        <p>While playing Round ${round} of Spin the Wheel, to what extent did you feel <b>immersed</b> and <b>engaged</b>?<br>
-        Report how immersed and engaged you felt by answering the following questions.</p></div>`;
+        <p>Next, please describe your experience playing Round ${round} of Spin the Wheel.
+        Specifically, please indicate the extent to which you agree or disagree with each of the following statements.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>absorbed</strong> did you feel in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>I found Round ${round} really boring.</div>`,
                 name: `absorbed`,
-                labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
+                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>immersed</strong> did you feel in Round ${round} of Spin the Wheel?</div>`,
-                name: `immersed`,
-                labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, time seemed to fly by.</div>`,
+                name: `absorbed`,
+                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>engaged</strong> did you feel in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>Staying focused on Round ${round} was a struggle.</div>`,
                 name: `engaged`,
-                labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
+                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <strong>engrossed</strong> did you feel in Round ${round} of Spin the Wheel?</div>`,
-                name: `engrossed`,
-                labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, I could easily ignore external distractions.</div>`,
+                name: `immersed`,
+                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
+                required: true,
+            },
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, the world outside the game seemed to disappear.</div>`,
+                name: `immersed`,
+                labels: ["0<br>Completely Disagree", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Completely Agree"],
                 required: true,
             },
         ];
@@ -552,7 +558,7 @@ const exp = (function() {
 
         <p>Below are a few more questions about Round ${round} of Spin the Wheel.</p>
 
-        <p>Instead of asking about immersion and engagement, these questions ask about <b>enjoyment</b>.<br>
+        <p>These questions ask about <b>enjoyment</b>.
         Report how much you <b>enjoyed</b> Round ${round} by answering the following questions.</p></div>`;
         this.questions = [
             {
