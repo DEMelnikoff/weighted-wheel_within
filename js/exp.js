@@ -136,13 +136,6 @@ const exp = (function() {
           },
         };
 
-        const instLoop = {
-          timeline: [attnChk, conditionalNode],
-          loop_function: () => {
-            const fail = jsPsych.data.get().last(2).select('totalErrors').sum() > 0 ? true : false;
-            return fail;
-          },
-        };
 
         const practiceComplete_1 = {
             type: jsPsychSurvey,
@@ -222,6 +215,23 @@ const exp = (function() {
             ],
             button_label_finish: 'Next',
         };
+
+        const instLoop_1 = {
+            timeline: [practiceComplete_1, attnChk, conditionalNode],
+            loop_function: () => {
+                const fail = jsPsych.data.get().last(2).select('totalErrors').sum() > 0 ? true : false;
+                return fail;
+            },
+        };
+
+        const instLoop_2 = {
+            timeline: [practiceComplete_2, attnChk, conditionalNode],
+            loop_function: () => {
+                const fail = jsPsych.data.get().last(2).select('totalErrors').sum() > 0 ? true : false;
+                return fail;
+            },
+        };
+
         const readyToPlay = {
             type: jsPsychSurvey,
             pages: [
@@ -244,7 +254,7 @@ const exp = (function() {
             button_label_finish: 'Next',
         };
 
-        this.timeline = (round == 1) ? [practiceComplete_1, instLoop, readyToPlay] : [practiceComplete_2, instLoop, readyToPlay];
+        this.timeline = (round == 1) ? [instLoop_1, readyToPlay] : [instLoop_2, readyToPlay];
     }
 
 
@@ -401,12 +411,12 @@ const exp = (function() {
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi;
         if (settings.miOrder == 'highMI_first' && round == 1 || settings.miOrder == 'highMI_second' && round == 2) {
-            sectors = jsPsych.randomization.repeat([ wedges.two, wedges.three, wedges.four, wedges.eight ], 1);
+            sectors = [ wedges.two, wedges.three, wedges.four, wedges.eight ];
             ev = 5.75;
             sd = 3.5;
             mi = 2;
         } else if (settings.miOrder == 'highMI_first' && round == 2 || settings.miOrder == 'highMI_second' && round == 1) {
-            sectors = jsPsych.randomization.repeat([ wedges.three, wedges.three, wedges.three, wedges.eight ], 1);
+            sectors = [ wedges.three, wedges.three, wedges.three, wedges.eight ];
             ev = 5.75;
             sd = 3.5;
             mi = .81;
@@ -435,7 +445,8 @@ const exp = (function() {
         const wheel = {
             type: jsPsychCanvasButtonResponse,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, jsPsych.timelineVariable('sectors'), jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), 1, scoreTracker);
+                let sectors_randomized = jsPsych.randomization.repeat(jsPsych.timelineVariable('sectors'), 1);
+                dmPsych.spinner(c, spinnerData, sectors_randomized, jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), 1, scoreTracker);
             },
             nSpins: 1,
             initialScore: function() {
