@@ -7,22 +7,19 @@ const exp = (function() {
 
     const miDraw = Math.floor(Math.random() * 2);
     let settings = {
-        nSpins: 10,
-        effortOrder: ['highEffort_first', 'highEffort_second'][Math.floor(Math.random() * 2)],
-        miOrder: ['highMI_first', 'highMI_second'][miDraw],
-        numOutcomes: [['4', '2'], ['2', '4']][miDraw],
-        pct: [['25% chance of winning 2 tokens, a 25% chance of winning 4 tokens, a 25% chance of winning 7 tokens, and a 25% chance of winning 10 tokens', '75% chance of winning 4 tokens and a 25% chance of winning 11 tokens'], ['75% chance of winning 4 tokens and a 25% chance of winning 11 tokens', '25% chance of winning 2 tokens, a 25% chance of winning 4 tokens, a 25% chance of winning 7 tokens, and a 25% chance of winning 10 tokens']][miDraw],
-        imgSrc: [['highMI.png', 'lowMI.png'], ['lowMI.png', 'highMI.png']][miDraw],
+        nSpins: 5,
+        effortOrder: jsPsych.randomization.repeat(['highEffort', 'lowEffort'], 1),
+        miOrder: jsPsych.randomization.repeat(['highMI', 'lowMI'], 1),
     };
 
     let text = {};
 
-    if (settings.effortOrder == 'highEffort_first') {
+    if (settings.effortOrder[0] == 'highEffort') {
         text.speed1_r1 = "<strong> as fast as possible</strong>";
         text.speed2_r1 = "If you do not tap your right arrow as fast as possible, the wheel will not build enough momentum to spin.";
         text.speed1_r2 = "<strong>at a moderate pace</strong>";
         text.speed2_r2 = "If you tap your right arrow either too quickly or too slowly, the wheel will not build enough momentum to spin.";
-    } else if (settings.effortOrder == 'highEffort_second') {
+    } else if (settings.effortOrder[0] == 'lowEffort') {
         text.speed1_r1 = "<strong>at a moderate pace</strong>";
         text.speed2_r1 = "If you tap your right arrow either too quickly or too slowly, the wheel will not build enough momentum to spin.";
         text.speed1_r2 = "<strong> as fast as possible</strong>";
@@ -38,15 +35,15 @@ const exp = (function() {
     // define each wedge
     const wedges = {
         one: {color:"#fe0000", label:"1"},
-        two: {color:"#0026ff", label:"2"},
-        three: {color:"#fe6a00", label:"3"},
+        two: {color:"#800001", label:"2"},
+        three: {color:"#228B22", label:"3"},
         four: {color:"#007f0e", label:"4"},
         five: {color:"#0094fe", label:"5"},
-        six: {color:"#800001", label:"6"},
+        six: {color:"#0026ff", label:"6"},
         seven: {color:"#00497e", label:"7"},
         eight: {color:"#b100fe", label:"8"},
         nine: {color:"#ffd800", label:"9"},
-        ten: {color:"#228B22", label:"10"},
+        ten: {color:"#fe6a00", label:"10"},
         eleven: {color:"#803400", label:"11"},
         twelve: {color:"#001280", label:"12"},
         thirteen: {color:"#806b00", label:"13"},
@@ -262,10 +259,12 @@ const exp = (function() {
 
         let speedText = (round == 1) ? text.speed1_r1 : text.speed1_r2;
 
-        let targetPressTime;
-        if (settings.effortOrder == 'highEffort_first' && round == 1 || settings.effortOrder == 'highEffort_second' && round == 2) {
+        const effort_level = [settings.effortOrder[0], settings.effortOrder[0], settings.effortOrder[1], settings.effortOrder[1]][round - 1];
+
+        // set target time between button presses
+        if (effort_level == 'highEffort') {
             targetPressTime = [0, .2];
-        } else if (settings.effortOrder == 'highEffort_first' && round == 2 || settings.effortOrder == 'highEffort_second' && round == 1) {
+        } else if (effort_level == 'lowEffort') {
             targetPressTime = [.2, .75];
         };
 
@@ -408,25 +407,27 @@ const exp = (function() {
 
     const MakeSpinLoop = function(round) {
 
+        const effort_level = [settings.effortOrder[0], settings.effortOrder[0], settings.effortOrder[1], settings.effortOrder[1]][round - 1];
+        const mi_level = [settings.miOrder[0], settings.miOrder[1], settings.miOrder[0], settings.miOrder[1]][round - 1];
+
         // set sectors, ev, sd, and mi
-        let sectors, ev, sd, mi;
-        if (settings.miOrder == 'highMI_first' && round == 1 || settings.miOrder == 'highMI_second' && round == 2) {
-            sectors = [ wedges.two, wedges.three, wedges.four, wedges.eight ];
+        let sectors, ev, sd, mi, targetPressTime;
+        if (mi_level == 'highMI') {
+            sectors = [ wedges.four, wedges.six, wedges.eight, wedges.ten ];
             ev = 5.75;
             sd = 3.5;
             mi = 2;
-        } else if (settings.miOrder == 'highMI_first' && round == 2 || settings.miOrder == 'highMI_second' && round == 1) {
-            sectors = [ wedges.three, wedges.three, wedges.three, wedges.eight ];
+        } else if (mi_level == 'lowMI') {
+            sectors = [ wedges.four, wedges.eight, wedges.eight, wedges.eight ];
             ev = 5.75;
             sd = 3.5;
             mi = .81;
         };
 
         // set target time between button presses
-        let targetPressTime;
-        if (settings.effortOrder == 'highEffort_first' && round == 1 || settings.effortOrder == 'highEffort_second' && round == 2) {
+        if (effort_level == 'highEffort') {
             targetPressTime = [0, .2];
-        } else if (settings.effortOrder == 'highEffort_first' && round == 2 || settings.effortOrder == 'highEffort_second' && round == 1) {
+        } else if (effort_level == 'lowEffort') {
             targetPressTime = [.2, .75];
         };
 
@@ -521,26 +522,20 @@ const exp = (function() {
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, time seemed to fly by.</div>`,
-                name: `time`,
-                labels: agreeDisagree,
-                required: true,
-            },
-            {
                 prompt: `<div style='color:rgb(109, 112, 114)'>Staying focused on Round ${round} was a struggle.</div>`,
-                name: `focusIsStruggle`,
+                name: `struggle`,
                 labels: agreeDisagree,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, I could easily ignore external distractions.</div>`,
-                name: `easilyIgnore`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>Throughout Round ${round}, I felt totally immersed.</div>`,
+                name: `easy`,
                 labels: agreeDisagree,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, everything outside the game seemed to disappear.</div>`,
-                name: `disappear`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>Throughout Round ${round}, I felt totally engrossed.</div>`,
+                name: `easy`,
                 labels: agreeDisagree,
                 required: true,
             },
@@ -644,9 +639,16 @@ const exp = (function() {
 
     // timeline: second wheel
     p.wheel_2 = {
-        timeline: [...practiceWheels_r2.timeline, attnChk2, new MakeSpinLoop(2), new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2)],
+        timeline: [new MakeSpinLoop(2), new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2)],
     };
 
+    p.wheel_3 = {
+        timeline: [...practiceWheels_r2.timeline, attnChk2, new MakeSpinLoop(3), new MakeFlowQs(3), new MakeEnjoyQs(3), new MakeEffortQs(3), new MakeScbQs(3)],
+    };
+
+    p.wheel_4 = {
+        timeline: [new MakeSpinLoop(4), new MakeFlowQs(4), new MakeEnjoyQs(4), new MakeEffortQs(4), new MakeScbQs(4)],
+    };
 
    /*
     *
@@ -861,6 +863,6 @@ const exp = (function() {
 
 }());
 
-const timeline = [exp.consent, exp.intro_1, exp.wheel_1, exp.intro_2, exp.wheel_2, exp.demographics, exp.save_data];
+const timeline = [exp.consent, exp.intro_1, exp.wheel_1, exp.wheel_2, exp.intro_2, exp.wheel_3, exp.wheel_4, exp.demographics, exp.save_data];
 
 jsPsych.run(timeline);
