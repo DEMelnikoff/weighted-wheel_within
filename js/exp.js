@@ -5,11 +5,35 @@ const exp = (function() {
 
     let p = {};
 
-    const miDraw = Math.floor(Math.random() * 2);
+    // define each wedge
+    const wedges = {
+        one: {color:"#fe0000", label:"1"},
+        two: {color:"#0080ff", label:"2"},
+        three: {color:"#228B22", label:"3"},
+        four: {color:"#0080ff", label:"4"},
+        five: {color:"#ff7518", label:"5"},
+        six: {color:"#9f00ff", label:"6"},
+        seven: {color:"#ff7518", label:"7"},
+        eight: {color:"#9f00ff", label:"8"},
+        nine: {color:"#228B22", label:"9"},
+        ten: {color:"#f5ea25", label:"10"},
+        eleven: {color:"#228B22", label:"11"},
+        twelve: {color:"#001280", label:"12"},
+        thirteen: {color:"#806b00", label:"13"},
+    };
+
+    const highMI_wheel1 = [ wedges.four, wedges.five, wedges.six, wedges.eleven ]
+    const lowMI_wheel1 = [ wedges.five, wedges.five, wedges.five, wedges.eleven ]
+    const highMI_wheel2 = [ wedges.two, wedges.seven, wedges.eight, wedges.nine ]
+    const lowMI_wheel2 = [ wedges.two, wedges.eight, wedges.eight, wedges.eight ]
+
+    const wheelDraw = Math.floor(Math.random() * 2);
     let settings = {
         nSpins: 5,
         effortOrder: jsPsych.randomization.repeat(['highEffort', 'lowEffort'], 1),
         miOrder: jsPsych.randomization.repeat(['highMI', 'lowMI'], 1),
+        wheels_highMI: [[highMI_wheel1, highMI_wheel2], [highMI_wheel2, highMI_wheel1]][wheelDraw],
+        wheels_lowMI: [[lowMI_wheel1, lowMI_wheel2], [lowMI_wheel2, lowMI_wheel1]][wheelDraw],
     };
 
     let text = {};
@@ -32,22 +56,6 @@ const exp = (function() {
         mi_order: settings.miOrder,
     });
 
-    // define each wedge
-    const wedges = {
-        one: {color:"#fe0000", label:"1"},
-        two: {color:"#800001", label:"2"},
-        three: {color:"#228B22", label:"3"},
-        four: {color:"#007f0e", label:"4"},
-        five: {color:"#0094fe", label:"5"},
-        six: {color:"#0026ff", label:"6"},
-        seven: {color:"#00497e", label:"7"},
-        eight: {color:"#b100fe", label:"8"},
-        nine: {color:"#ffd800", label:"9"},
-        ten: {color:"#fe6a00", label:"10"},
-        eleven: {color:"#803400", label:"11"},
-        twelve: {color:"#001280", label:"12"},
-        thirteen: {color:"#806b00", label:"13"},
-    };
 
    /*
     *
@@ -65,18 +73,19 @@ const exp = (function() {
 
     function MakeAttnChk(settings, round) {
 
-        let correctAnswers = [`Win as many tokens as possible.`, `10`, `20%`, `20%`];
+        let roundNumbers = (round == 1) ? 'Rounds 1 and 2' : 'Rounds 3 and 4';
+        let correctAnswers = [`Win as many tokens as possible.`, `5`, `20%`, `20%`];
 
-        if (settings.effortOrder == 'highEffort_first' && round == 1 || settings.effortOrder == 'highEffort_second' && round == 2) {
-            correctAnswers.push(`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`);
-        } else if (settings.effortOrder == 'highEffort_first' && round == 2 || settings.effortOrder == 'highEffort_second' && round == 1) {
-            correctAnswers.push(`In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`);
+        if (settings.effortOrder[0] == 'highEffort' && round == 1 || settings.effortOrder[1] == 'highEffort' && round == 2) {
+            correctAnswers.push(`In ${roundNumbers}, I must tap my right arrow as fast as possible to build momentum.`);
+        } else if (settings.effortOrder[0] == 'lowEffort' && round == 1 || settings.effortOrder[1] == 'lowEffort' && round == 2) {
+            correctAnswers.push(`In ${roundNumbers}, I must tap my right arrow at a moderate pace to build momentum.`);
         };
 
         const attnChk = {
            type: jsPsychSurveyMultiChoice,
             preamble: `<div class='parent' style='text-align: left; color: rgb(109, 112, 114)'>
-                <p><strong>Please answer the following questions.</strong></p>
+                <p><strong>Please answer the following questions about ${roundNumbers} of Spin the Wheel.</strong></p>
                 </div>`,
             questions: [
                 {
@@ -85,7 +94,7 @@ const exp = (function() {
                     options: [`Win as many tokens as possible.`, `Spin the wheel as fast as possible.`],
                 },
                 {
-                    prompt: `<div style='color: rgb(109, 112, 114)'>In Round ${round}, how many times will you spin the wheel?</div>`, 
+                    prompt: `<div style='color: rgb(109, 112, 114)'>How many times will you spin the wheel per round?</div>`, 
                     name: `attnChk2`, 
                     options: [`0`, `5`, `10`],
                 },
@@ -102,7 +111,7 @@ const exp = (function() {
                 {
                     prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
                     name: `attnChk5`, 
-                    options: [`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`, `In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`],
+                    options: [`In ${roundNumbers}, I must tap my right arrow as fast as possible to build momentum.`, `In ${roundNumbers}, I must tap my right arrow at a moderate pace to build momentum.`],
                 },
             ],
             scale_width: 500,
@@ -141,13 +150,13 @@ const exp = (function() {
                     {
                         type: 'html',
                         prompt: `<p><b>Practice is now complete!</b></p>
-                        <p>Continue to learn more about Round ${round} of Spin the Wheel.</p>`
+                        <p>Continue to learn more about Spin the Wheel.</p>`
                     },
                 ],
                 [
                     {
                         type: 'html',
-                        prompt: `<p>In Round 1 of Spin the Wheel, the number of tokens you win for each spin depends on where the wheel lands. For example, if the wheel lands on a 3, you'll earn 3 tokens.</p>`
+                        prompt: `<p>In Spin the Wheel, the number of tokens you win for each spin depends on where the wheel lands. For example, if the wheel lands on a 3, you'll earn 3 tokens.</p>`
                     },
                 ],
                 [
@@ -190,7 +199,7 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: `<p>In Round ${round} of Spin the Wheel, you'll spin the wheel a total of <b>10 times</b>.</p>`
+                        prompt: `<p>In each round of Spin the Wheel, you'll spin the wheel <b>5 times</b>.</p>`
                     },
                 ],
             ],
@@ -204,8 +213,8 @@ const exp = (function() {
                     {
                         type: 'html',
                         prompt: `<p><b>Practice is now complete!</b></p>
-                        <p>The rules of Round ${round} of Spin the Wheel are identical to the rules of Round 1: 
-                        You'll spin the wheel a total of 10 times, and after each spin, you'll have a 20% chance of winning 5 extra tokens and a 20% chance of losing 5 tokens.</p>`,
+                        <p>The rules of Rounds 3 and 4 of Spin the Wheel are identical to the rules of Rounds 1 and 2: 
+                        You'll spin the wheel 5 times per round, and after each spin, you'll have a 20% chance of winning 5 extra tokens and a 20% chance of losing 5 tokens.</p>`,
 
                     },
                 ],
@@ -237,11 +246,11 @@ const exp = (function() {
                         type: 'html',
                         prompt: function() {
                             if (round == 1) {
-                                return `<p>You're now ready to play Round ${round} of Spin the Wheel.</p>
-                                <p>To play Round ${round}, continue to the next screen.</p>`
+                                return `<p>You're now ready to play Round 1 of Spin the Wheel.</p>
+                                <p>To play Round 1, continue to the next screen.</p>`
                             } else {
-                                return `<p>You're now ready to win more tokens by playing Round ${round} of Spin the Wheel.</p>
-                                <p>To play Round ${round}, continue to the next screen.</p>`
+                                return `<p>You're now ready to win more tokens by playing Rounds 3 of Spin the Wheel.</p>
+                                <p>To play Round 3, continue to the next screen.</p>`
                             }
                         }
                     },
@@ -258,6 +267,7 @@ const exp = (function() {
     function MakePracticeWheel(text, round) {
 
         let speedText = (round == 1) ? text.speed1_r1 : text.speed1_r2;
+        let targetPressTime;
 
         const effort_level = [settings.effortOrder[0], settings.effortOrder[0], settings.effortOrder[1], settings.effortOrder[1]][round - 1];
 
@@ -268,6 +278,8 @@ const exp = (function() {
             targetPressTime = [.2, .75];
         };
 
+        console.log(targetPressTime);
+
         const practiceWheel_1 = {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
@@ -277,7 +289,7 @@ const exp = (function() {
             <p>Practice spinning by tapping your right arrow ${speedText} until the "Spinning!" message appears.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], targetPressTime, [0], 1, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.ten, wedges.ten], targetPressTime, [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
             initialScore: function() {
@@ -298,7 +310,7 @@ const exp = (function() {
                 <p>Spin the wheel by tapping your right arrow ${speedText} until the "Spinning!" message appears.</p>
                 </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.nine, wedges.nine], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.ten, wedges.ten], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
             },
             nSpins: 2,
             initialScore: function() {
@@ -329,7 +341,7 @@ const exp = (function() {
                     prompt:`<p><strong>What makes some activities more immersive and engaging than others?</strong></p>
                     <p>We're interested in why people feel completely immersed in some activities (such as engrossing video games),
                     but struggle to focus on other activities (like tedious chores).</p>
-                    <p>To help us, you'll play two rounds of a game called <strong>Spin the Wheel</strong>.
+                    <p>To help us, you'll play four rounds of a game called <strong>Spin the Wheel</strong>.
                     After each round, you'll report how immersed and engrossed you felt.</p>
                     <p>When you're ready to learn about Spin the Wheel, continue to the next page.</p>`
                 },
@@ -345,7 +357,7 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>In both rounds of Spin the Wheel, you'll win tokens by spinning a prize wheel.</p>
+                    prompt: `<p>In Spin the Wheel, you'll win tokens by spinning various prize wheels.</p>
                     <p>To spin a prize wheel, you must build up enough momentum.</p>
                     <p>To build momentum, you must repeatedly tap the right arrow on your keyboard.</p>`
                 },
@@ -353,9 +365,9 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>In Round 1 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>
+                    prompt: `<p>In the first two rounds of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>
                     <p>Once you build enough momentum, the wheel will spin automatically.</p>
-                    <p>To practice Round 1, continue to the next page.</p>`,
+                    <p>To practice, continue to the next page.</p>`,
                 },
             ],
 
@@ -370,25 +382,55 @@ const exp = (function() {
                 {
                     type: 'html',
                     prompt: `<p>Round 1 of Spin the Wheel is now complete!</p>
-                    <p>Soon, you'll be able to win more tokens by playing Round 2</p>
-                    <p>To learn about Round 2, continue to the next screen.</p>`
+                    <p>Next, you'll play Round 2, which is identical to Round 1 except that the wheel has different outcomes.</p>
+                    <p>To play Round 2, continue to the next screen.</p>`
+                },
+            ],
+        ],
+        button_label_finish: 'Next'    
+    };
+
+    p.intro_3 = {
+        type: jsPsychSurvey,
+        pages: [
+            [
+                {
+                    type: 'html',
+                    prompt: `<p>Round 2 of Spin the Wheel is now complete!</p>
+                    <p>Soon, you'll be able to win more tokens by playing Rounds 3 and 4.</p>
+                    <p>To learn about Rounds 3 and 4, continue to the next screen.</p>`
                 },
             ],
             [
                 {
                     type: 'html',
-                    prompt: `<p>In Round 2 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r2}. ${text.speed2_r2}</p>
+                    prompt: `<p>In Rounds 3 and 4 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r2}. ${text.speed2_r2}</p>
                     <p>Once you build enough momentum, the wheel will spin automatically.</p>
-                    <p>To practice Round 2, continue to the next page.</p>`,
+                    <p>To practice, continue to the next page.</p>`,
                 }
             ]
         ],
         button_label_finish: 'Next'    
     };
 
+    p.intro_4 = {
+        type: jsPsychSurvey,
+        pages: [
+            [
+                {
+                    type: 'html',
+                    prompt: `<p>Round 3 of Spin the Wheel is now complete!</p>
+                    <p>Next, you'll play Round 4, which is identical to Round 3 except that the wheel has different outcomes.</p>
+                    <p>To play Round 4, continue to the next screen.</p>`
+                },
+            ],
+        ],
+        button_label_finish: 'Next'    
+    };
+
     const practiceWheels_r1 = new MakePracticeWheel(text, 1);
 
-    const practiceWheels_r2 = new MakePracticeWheel(text, 2);
+    const practiceWheels_r2 = new MakePracticeWheel(text, 3);
 
     const attnChk1 = new MakeAttnChk(settings, 1);
 
@@ -413,13 +455,13 @@ const exp = (function() {
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi, targetPressTime;
         if (mi_level == 'highMI') {
-            sectors = [ wedges.four, wedges.six, wedges.eight, wedges.ten ];
-            ev = 5.75;
+            sectors = settings.wheels_highMI.pop();
+            ev = 5.5;
             sd = 3.5;
             mi = 2;
         } else if (mi_level == 'lowMI') {
-            sectors = [ wedges.four, wedges.eight, wedges.eight, wedges.eight ];
-            ev = 5.75;
+            sectors = settings.wheels_lowMI.pop();
+            ev = 5.5;
             sd = 3.5;
             mi = .81;
         };
@@ -455,7 +497,7 @@ const exp = (function() {
             },
             canvas_size: [500, 500],
             show_scoreboard: false,
-            data: {round: jsPsych.timelineVariable('round'), mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
+            data: {round: jsPsych.timelineVariable('round'), effort: effort_level, mi: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
             on_finish: function(data) {
                 scoreTracker = data.score;
                 outcome = data.outcomes[0];
@@ -473,7 +515,7 @@ const exp = (function() {
             },
             choices: "NO_KEYS",
             trial_duration: 2000,
-            data: {round: jsPsych.timelineVariable('round'), mi: jsPsych.timelineVariable('mi'), targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
+            data: {round: jsPsych.timelineVariable('round'), effort: effort_level, mi: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
             on_finish: function() {
                 if (tokenArray.length == 0) {
                     tokenArray = makeTokenArray();
@@ -522,20 +564,26 @@ const exp = (function() {
                 required: true,
             },
             {
+                prompt: `<div style='color:rgb(109, 112, 114)'>I found Round ${round} really tedious.</div>`,
+                name: `tedious`,
+                labels: agreeDisagree,
+                required: true,
+            },
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, I felt totally immersed in the game.</div>`,
+                name: `immersed`,
+                labels: agreeDisagree,
+                required: true,
+            },
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, I felt totally engrossed in the game.</div>`,
+                name: `engrossed`,
+                labels: agreeDisagree,
+                required: true,
+            },
+            {
                 prompt: `<div style='color:rgb(109, 112, 114)'>Staying focused on Round ${round} was a struggle.</div>`,
                 name: `struggle`,
-                labels: agreeDisagree,
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>Throughout Round ${round}, I felt totally immersed.</div>`,
-                name: `easy`,
-                labels: agreeDisagree,
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>Throughout Round ${round}, I felt totally engrossed.</div>`,
-                name: `easy`,
                 labels: agreeDisagree,
                 required: true,
             },
@@ -552,17 +600,8 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
 
-        <p>Below are a few more questions about Round ${round} of Spin the Wheel.</p>
-
-        <p>These questions ask about <b>enjoyment</b>.<br>
-        Report how much you <b>enjoyed</b> Round ${round} by answering the following questions.</p></div>`;
+        <p>Below are a few more questions about Round ${round} of Spin the Wheel.</p>`;
         this.questions = [
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>enjoy</b> playing Round ${round} of Spin the Wheel?</div>`,
-                name: `enjoyable`,
-                labels: zeroToALot,
-                required: true,
-            },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>like</b> playing Round ${round} of Spin the Wheel?</div>`,
                 name: `like`,
@@ -573,18 +612,6 @@ const exp = (function() {
                 prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>dislike</b> playing Round ${round} of Spin the Wheel?</div>`,
                 name: `dislike`,
                 labels: zeroToALot,
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How much <b>fun</b> did you have playing Round ${round} of Spin the Wheel?</div>`,
-                name: `fun`,
-                labels: zeroToALot,
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>entertaining</b> was Round ${round} of Spin the Wheel?</div>`,
-                name: `entertaining`,
-                labels: zeroToExtremely,
                 required: true,
             },
         ];
@@ -837,7 +864,7 @@ const exp = (function() {
 
 
         const demos = {
-            timeline: [taskComplete, freeResponse, gender, age, ethnicity, english, finalWord]
+            timeline: [taskComplete, gender, age, ethnicity, english, finalWord]
         };
 
         return demos;
@@ -863,6 +890,6 @@ const exp = (function() {
 
 }());
 
-const timeline = [exp.consent, exp.intro_1, exp.wheel_1, exp.wheel_2, exp.intro_2, exp.wheel_3, exp.wheel_4, exp.demographics, exp.save_data];
+const timeline = [exp.consent, exp.intro_1, exp.wheel_1, exp.intro_2, exp.wheel_2, exp.intro_3, exp.wheel_3, exp.intro_4, exp.wheel_4, exp.demographics, exp.save_data];
 
 jsPsych.run(timeline);
