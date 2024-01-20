@@ -553,29 +553,35 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
-        <p>During Round ${round} of Spin the Wheel, to what extent did you feel<br><b>immersed</b> and <b>engaged</b> in what you were doing?</p>
-        <p>Report the degree to which you felt immersed and engaged by answering the following questions.</p></div>`;
+        <p>During Round ${round}, to what extent did you feel <b>bored</b> versus <b>immersed</b> and <b>engaged</b>?</p>
+        <p>Report how you felt by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>absorbed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>bored</b> did you feel during Round ${round} of Spin the Wheel?</div>`,
+                name: `bored`,
+                labels: ["0<br>Not very bored", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More bored than I've ever felt"],
+                required: true,
+            },
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>absorbed</b> did you feel in Round ${round} of Spin the Wheel?</div>`,
                 name: `absorbed`,
                 labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>immersed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>immersed</b> did you feel in Round ${round} of Spin the Wheel?</div>`,
                 name: `immersed`,
                 labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engaged</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engaged</b> did you feel in Round ${round} of Spin the Wheel?</div>`,
                 name: `engaged`,
                 labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engrossed</strong> did you feel in what you were doing?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engrossed</b> did you feel in Round ${round} of Spin the Wheel?</div>`,
                 name: `engrossed`,
                 labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
                 required: true,
