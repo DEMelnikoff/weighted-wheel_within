@@ -8,32 +8,30 @@ const exp = (function() {
     // define each wedge
     const wedges = {
         one: {color:"#fe0000", label:"1"},
-        two: {color:"#0080ff", label:"2"},
+        two: {color:"#ff7518", label:"2"},
         three: {color:"#228B22", label:"3"},
-        four: {color:"#0080ff", label:"4"},
-        five: {color:"#ff7518", label:"5"},
-        six: {color:"#9f00ff", label:"6"},
+        four: {color:"#0080ff", label:"4"}, 
+        five: {color:"#ff7518", label:"5"}, 
+        six: {color:"#9f00ff", label:"6"},  
         seven: {color:"#ff7518", label:"7"},
-        eight: {color:"#9f00ff", label:"8"},
+        eight: {color:"#228B22", label:"8"},
         nine: {color:"#228B22", label:"9"},
         ten: {color:"#f5ea25", label:"10"},
-        eleven: {color:"#228B22", label:"11"},
+        eleven: {color:"#228B22", label:"11"}, 
         twelve: {color:"#001280", label:"12"},
         thirteen: {color:"#806b00", label:"13"},
     };
 
-    const highMI_wheel1 = [ wedges.four, wedges.five, wedges.six, wedges.eleven ]
-    const lowMI_wheel1 = [ wedges.five, wedges.five, wedges.five, wedges.eleven ]
-    const highMI_wheel2 = [ wedges.two, wedges.seven, wedges.eight, wedges.nine ]
-    const lowMI_wheel2 = [ wedges.two, wedges.eight, wedges.eight, wedges.eight ]
+    const highMI_wheel = [ wedges.two, wedges.four, wedges.six, wedges.eight ]
+    const lowMI_wheel1 = [ wedges.four, wedges.four, wedges.six, wedges.six ]
+    const lowMI_wheel2 = [ wedges.two, wedges.two, wedges.eight, wedges.eight ]
 
     const wheelDraw = Math.floor(Math.random() * 2);
     let settings = {
         nSpins: 5,
         effortOrder: jsPsych.randomization.repeat(['highEffort', 'lowEffort'], 1),
         miOrder: jsPsych.randomization.repeat(['highMI', 'lowMI'], 1),
-        wheels_highMI: [[highMI_wheel1, highMI_wheel2], [highMI_wheel2, highMI_wheel1]][wheelDraw],
-        wheels_lowMI: [[lowMI_wheel1, lowMI_wheel2], [lowMI_wheel2, lowMI_wheel1]][wheelDraw],
+        lowMI_wheel: [lowMI_wheel1, lowMI_wheel2][wheelDraw],
     };
 
     let text = {};
@@ -458,12 +456,12 @@ const exp = (function() {
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi, targetPressTime;
         if (mi_level == 'highMI') {
-            sectors = settings.wheels_highMI.pop();
+            sectors = highMI_wheel;
             ev = 5.5;
             sd = 3.5;
             mi = 2;
         } else if (mi_level == 'lowMI') {
-            sectors = settings.wheels_lowMI.pop();
+            sectors = settings.lowMI_wheel;
             ev = 5.5;
             sd = 3.5;
             mi = .81;
@@ -491,8 +489,7 @@ const exp = (function() {
         const wheel = {
             type: jsPsychCanvasButtonResponse,
             stimulus: function(c, spinnerData) {
-                let sectors_randomized = jsPsych.randomization.repeat(jsPsych.timelineVariable('sectors'), 1);
-                dmPsych.spinner(c, spinnerData, sectors_randomized, jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), 1, scoreTracker);
+                dmPsych.spinner(c, spinnerData, jsPsych.timelineVariable('sectors'), jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), 1, scoreTracker);
             },
             nSpins: 1,
             initialScore: function() {
@@ -552,42 +549,35 @@ const exp = (function() {
 
     // constructor functions
     function MakeFlowQs(round) {
+        const secondVersion = (round == 1) ? 'Round 1' : 'Round 2';
         this.type = jsPsychSurveyLikert;
         this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
-
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
-
-        <p>Next, please describe your experience playing Round ${round} of Spin the Wheel.
-        Specifically, please indicate the extent to which you agree or disagree with each of the following statements.</p></div>`;
+        <p>During Round ${round} of Spin the Wheel, to what extent did you feel<br><b>immersed</b> and <b>engaged</b> in what you were doing?</p>
+        <p>Report the degree to which you felt immersed and engaged by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>I found Round ${round} really boring.</div>`,
-                name: `boring`,
-                labels: agreeDisagree,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>absorbed</strong> did you feel in what you were doing?</div>`,
+                name: `absorbed`,
+                labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>I found Round ${round} really tedious.</div>`,
-                name: `tedious`,
-                labels: agreeDisagree,
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, I felt totally immersed in the game.</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>immersed</strong> did you feel in what you were doing?</div>`,
                 name: `immersed`,
-                labels: agreeDisagree,
+                labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, I felt totally engrossed in the game.</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engaged</strong> did you feel in what you were doing?</div>`,
+                name: `engaged`,
+                labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
+                required: true,
+            },
+            {
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round} of Spin the Wheel, how <strong>engrossed</strong> did you feel in what you were doing?</div>`,
                 name: `engrossed`,
-                labels: agreeDisagree,
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>Staying focused on Round ${round} was a struggle.</div>`,
-                name: `struggle`,
-                labels: agreeDisagree,
+                labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
                 required: true,
             },
         ];
