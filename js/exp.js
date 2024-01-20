@@ -52,8 +52,11 @@ const exp = (function() {
 
     jsPsych.data.addProperties({
         spins_per_wheel: settings.nSpins,
-        effort_order: settings.effortOrder,
-        mi_order: settings.miOrder,
+        effort_order1: settings.effortOrder[0],
+        effort_order2: settings.effortOrder[1],
+        mi_order1: settings.miOrder[0],
+        mi_order2: settings.miOrder[1],
+        counterbalance: wheelDraw,
     });
 
 
@@ -249,7 +252,7 @@ const exp = (function() {
                                 return `<p>You're now ready to play Round 1 of Spin the Wheel.</p>
                                 <p>To play Round 1, continue to the next screen.</p>`
                             } else {
-                                return `<p>You're now ready to win more tokens by playing Rounds 3 of Spin the Wheel.</p>
+                                return `<p>You're now ready to win more tokens by playing Round 3 of Spin the Wheel.</p>
                                 <p>To play Round 3, continue to the next screen.</p>`
                             }
                         }
@@ -497,10 +500,10 @@ const exp = (function() {
             },
             canvas_size: [500, 500],
             show_scoreboard: false,
-            data: {round: jsPsych.timelineVariable('round'), effort: effort_level, mi: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
+            data: {round: jsPsych.timelineVariable('round'), effort_condition: effort_level, mi_condition: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
             on_finish: function(data) {
                 scoreTracker = data.score;
-                outcome = data.outcomes[0];
+                outcome = data.outcomes;
                 color = data.color;
             },
         };
@@ -515,7 +518,7 @@ const exp = (function() {
             },
             choices: "NO_KEYS",
             trial_duration: 2000,
-            data: {round: jsPsych.timelineVariable('round'), effort: effort_level, mi: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
+            data: {round: jsPsych.timelineVariable('round'), effort_condition: effort_level, mi_condition: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
             on_finish: function() {
                 if (tokenArray.length == 0) {
                     tokenArray = makeTokenArray();
