@@ -520,7 +520,7 @@ const dmPsych = (function() {
           lastPressTime = performance.now();
         };
       };
-      /*if (e.key == " " || e.code == "Space" || e.keyCode == 32) { 
+      if (e.key == " " || e.code == "Space" || e.keyCode == 32) { 
         if (!isSpinning & readyToSpin) {
           isAccelerating = true;
           isSpinning = true;
@@ -528,7 +528,7 @@ const dmPsych = (function() {
           vel_max_rand = rand(vel_max + 180, vel_max - 30);
           spin()
         };
-      };*/
+      };
     });
 
     // listen for keyup
@@ -553,13 +553,6 @@ const dmPsych = (function() {
         readyToSpin = false;
         pointer.textContent = '';
         pointer.style.background = 'white';
-      };
-      if (!isSpinning & readyToSpin) {
-          isAccelerating = true;
-          isSpinning = true;
-          readyToSpin = false;
-          vel_max_rand = rand(vel_max + 180, vel_max - 30);
-          spin()
       };
     };
 
@@ -640,9 +633,9 @@ const dmPsych = (function() {
           spinnerData.outcomes.push(parseFloat(sector.label));
           drawSector(sectors, getIndex());
           updateScore(parseFloat(sector.label), sector.color);
-          //pointer.style.font = '2rem/0 sans-serif';
-          //pointer.textContent = sector.label;
-          //pointer.style.background = sector.color;
+          pointer.style.font = '2rem/0 sans-serif';
+          pointer.textContent = sector.label;
+          pointer.style.background = sector.color;
           pressTimes.shift();
           spinnerData.color = sector.color;
           spinnerData.pressTimes.push(pressTimes);
@@ -662,7 +655,7 @@ const dmPsych = (function() {
       scoreMsg.innerHTML = `<span style="color:${color}; font-weight: bolder">${score}</span>`;
       setTimeout(() => {
         scoreMsg.innerHTML = `${score}`
-        totalSpinsMsg.innerHTML = (totalSpins !== 9) ? `(${10 - totalSpins} spins remaining)` : `(${10 - totalSpins} spin remaining)`
+        totalSpinsMsg.innerHTML = (totalSpins !== 9) ? `(${5 - totalSpins} spins remaining)` : `(${5 - totalSpins} spin remaining)`
         isSpinning = false;
         pointer.style.font = '1.2rem/0 sans-serif';
         pointer.textContent = '';

@@ -75,7 +75,7 @@ const exp = (function() {
     function MakeAttnChk(settings, round) {
 
         let roundNumbers = (round == 1) ? 'Rounds 1 and 2' : 'Rounds 3 and 4';
-        let correctAnswers = [`Win as many tokens as possible.`, `5`, `20%`, `20%`];
+        let correctAnswers = [`Win as many tokens as possible.`, `5`];
 
         if (settings.effortOrder[0] == 'highEffort' && round == 1 || settings.effortOrder[1] == 'highEffort' && round == 2) {
             correctAnswers.push(`In ${roundNumbers}, I must tap my right arrow as fast as possible to build momentum.`);
@@ -100,18 +100,8 @@ const exp = (function() {
                     options: [`0`, `5`, `10`],
                 },
                 {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>After each spin, what are your chances of randomly winning 5 extra tokens?</div>", 
-                    name: `attnChk3`, 
-                    options: [`0%`, `20%`, `100%`],
-                },
-                {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>After each spin, what are your chances of randomly losing 5 tokens?</div>", 
-                    name: `attnChk4`, 
-                    options: [`0%`, `20%`, `100%`],
-                },
-                {
                     prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
-                    name: `attnChk5`, 
+                    name: `attnChk3`, 
                     options: [`In ${roundNumbers}, I must tap my right arrow as fast as possible to build momentum.`, `In ${roundNumbers}, I must tap my right arrow at a moderate pace to build momentum.`],
                 },
             ],
@@ -157,44 +147,8 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: `<p>In Spin the Wheel, the number of tokens you win for each spin depends on where the wheel lands. For example, if the wheel lands on a 3, you'll earn 3 tokens.</p>`
-                    },
-                ],
-                [
-                    {
-                        type: 'html',
-                        prompt: `<p>After each spin, you'll see a message indicating how many tokens you won. For example, after landing on a 3, you'd see this message indicating that you won 3 tokens:</p>
-                        <div class="play-area-inst">               
-                            <div class="win-text-inst" style="color:#fe6a00">+3 Tokens</div>
-                        </div>`
-                    },
-                ],
-                [
-                    {
-                        type: 'html',
-                        prompt: `<p>In addition to earning tokens through spinning, you can gain or lose tokens randomly.
-                        Specifically, after each spin, you have a 20% chance of winning 5 extra tokens, and a 20% chance of losing 5 tokens.</p>`,
-
-                    },
-                ],
-                [
-                    {
-                        type: 'html',
-                        prompt: `<p>If you see "+5 Bonus," this means you randomly won 5 extra tokens. For example, this is what you'd see if you randomly won 5 extra tokens after landing on a 3:</p>
-                        <div class="play-area-inst">               
-                            <div class="win-text-inst" style="color:#fe6a00">+3 Tokens</div>
-                            <div class="plus-text-inst">+5 Bonus</div>
-                        </div>`,
-                    },
-                ],
-                [
-                    {
-                        type: 'html',
-                        prompt: `<p>If you see "-5 Loss," this means you randomly lost 5 tokens. For example, this is what you'd see if you randomly lost 5 tokens after landing on a 3:</p>
-                        <div class="play-area-inst">               
-                            <div class="win-text-inst" style="color:#fe6a00">+3 Tokens</div>
-                            <div class="minus-text-inst">-5 Loss</div>
-                        </div>`
+                        prompt: `<p>In Spin the Wheel, the number of tokens you win for each spin depends on where the wheel lands. For example, if the wheel lands on a 3, you'll earn 3 tokens.</p>
+                        <p>Throughout the game, your total number of tokens will be displayed at the top of the screen.</p>`
                     },
                 ],
                 [
@@ -214,8 +168,7 @@ const exp = (function() {
                     {
                         type: 'html',
                         prompt: `<p><b>Practice is now complete!</b></p>
-                        <p>The rules of Rounds 3 and 4 of Spin the Wheel are identical to the rules of Rounds 1 and 2: 
-                        You'll spin the wheel 5 times per round, and after each spin, you'll have a 20% chance of winning 5 extra tokens and a 20% chance of losing 5 tokens.</p>`,
+                        <p>Continue to play Rounds 3 and 4 of Spin the Wheel.</p>`,
 
                     },
                 ],
@@ -285,9 +238,9 @@ const exp = (function() {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
             <p>Repeatedly tap your right arrow ${speedText} to build momentum.
-            Once you build enough momentum, you'll see a "Spinning!" message at the center of the wheel,
-            which means that the wheel is spinning on its own and you can stop tapping your right arrow.</p>
-            <p>Practice spinning by tapping your right arrow ${speedText} until the "Spinning!" message appears.</p>
+            Once you build enough momentum, you'll see a "Ready!" message at the center of the wheel,
+            which means you can stop tapping and spin the wheel by pressing your spacebar.</p>
+            <p>Practice spinning by (1) tapping your right arrow ${speedText} and then (2) pressing your spacebar when the "Ready!" message appears.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
                 dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.ten, wedges.ten], targetPressTime, [0], 1, scoreTracker_practice);
@@ -307,9 +260,9 @@ const exp = (function() {
         const practiceWheel_2 = {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
-                <p>Great job! Now, spin the wheel a few more time to get the hang of it. Remember:</p>
-                <p>Spin the wheel by tapping your right arrow ${speedText} until the "Spinning!" message appears.</p>
-                </div>`,
+            <p>Great job! Now, spin the wheel a few more time to get the hang of it. Remember:</p>
+            <p>Spin the wheel by (1) tapping your right arrow ${speedText} and until the "Ready!" message appears and then (2) pressing your spacebar.</p>
+            </div>`,
             stimulus: function(c, spinnerData) {
                 dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.ten, wedges.ten], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
             },
@@ -359,15 +312,16 @@ const exp = (function() {
                 {
                     type: 'html',
                     prompt: `<p>In Spin the Wheel, you'll win tokens by spinning various prize wheels.</p>
-                    <p>To spin a prize wheel, you must build up enough momentum.</p>
-                    <p>To build momentum, you must repeatedly tap the right arrow on your keyboard.</p>`
+                    <p>Spinning a prize wheel is a two-step process.</p>
+                    <p>First, you must build momentum by tapping the right arrow on your keyboard.
+                    Once you build enough momentum, you must press your spacebar to spin the wheel.</p>`
                 },
             ],
             [
                 {
                     type: 'html',
                     prompt: `<p>In the first two rounds of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>
-                    <p>Once you build enough momentum, the wheel will spin automatically.</p>
+                    <p>Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
                     <p>To practice, continue to the next page.</p>`,
                 },
             ],
@@ -406,7 +360,6 @@ const exp = (function() {
                 {
                     type: 'html',
                     prompt: `<p>In Rounds 3 and 4 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r2}. ${text.speed2_r2}</p>
-                    <p>Once you build enough momentum, the wheel will spin automatically.</p>
                     <p>To practice, continue to the next page.</p>`,
                 }
             ]
@@ -489,14 +442,14 @@ const exp = (function() {
         const wheel = {
             type: jsPsychCanvasButtonResponse,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, jsPsych.timelineVariable('sectors'), jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), 1, scoreTracker);
+                dmPsych.spinner(c, spinnerData, jsPsych.timelineVariable('sectors'), jsPsych.timelineVariable('targetPressTime'), jsPsych.timelineVariable('guaranteedOutcome'), 5, scoreTracker);
             },
-            nSpins: 1,
+            nSpins: 5,
             initialScore: function() {
                 return scoreTracker;
             },
             canvas_size: [500, 500],
-            show_scoreboard: false,
+            show_scoreboard: true,
             data: {round: jsPsych.timelineVariable('round'), effort_condition: effort_level, mi_condition: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
             on_finish: function(data) {
                 scoreTracker = data.score;
@@ -505,32 +458,7 @@ const exp = (function() {
             },
         };
 
-        const tokens = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus: function() {
-                bonusType = tokenArray.pop();
-                const extraOutcome = (bonusType == 'plus') ? '<div class="plus-text">+5 Bonus</div>' : (bonusType == 'minus') ? '<div class="minus-text">-5 Loss</div>' : '';
-                const feedback = `<div class="play-area"> <div class="win-text" style="color:${color}">+${outcome} Tokens</div> ${extraOutcome} </div>`;
-                return feedback;
-            },
-            choices: "NO_KEYS",
-            trial_duration: 2000,
-            data: {round: jsPsych.timelineVariable('round'), effort_condition: effort_level, mi_condition: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
-            on_finish: function() {
-                if (tokenArray.length == 0) {
-                    tokenArray = makeTokenArray();
-                };
-                if (bonusType == 'plus') {
-                    scoreTracker++;
-                } else if (bonusType == 'minus') {
-                    scoreTracker--;
-                }
-                console.log(scoreTracker);
-            },
-        };
-
-        this.timeline = [wheel, tokens];
-        this.repetitions = settings.nSpins;
+        this.timeline = [wheel];
     }
 
 
@@ -553,35 +481,29 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
-        <p>During Round ${round}, to what extent did you feel <b>bored</b> versus <b>immersed</b> and <b>engaged</b>?</p>
-        <p>Report how you felt by answering the following questions.</p></div>`;
+        <p>During Round ${round}, how <b>immersed</b> and <b>engaged</b> did you feel in the game?</p>
+        <p>Report how <b>immersed</b> and <b>engaged</b> you felt by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>bored</b> did you feel during Round ${round} of Spin the Wheel?</div>`,
-                name: `bored`,
-                labels: ["0<br>Not very bored", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More bored than I've ever felt"],
-                required: true,
-            },
-            {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>absorbed</b> did you feel in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <b>absorbed</b> did you feel in the game?</div>`,
                 name: `absorbed`,
                 labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>immersed</b> did you feel in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <b>immersed</b> did you feel in the game?</div>`,
                 name: `immersed`,
                 labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engaged</b> did you feel in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <b>engaged</b> did you feel in the game?</div>`,
                 name: `engaged`,
                 labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engrossed</b> did you feel in Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <b>engrossed</b> did you feel in the game?</div>`,
                 name: `engrossed`,
                 labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
                 required: true,
