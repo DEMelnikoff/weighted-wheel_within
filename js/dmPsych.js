@@ -655,7 +655,7 @@ const dmPsych = (function() {
       scoreMsg.innerHTML = `<span style="color:${color}; font-weight: bolder">${score}</span>`;
       setTimeout(() => {
         scoreMsg.innerHTML = `${score}`
-        totalSpinsMsg.innerHTML = (totalSpins !== 9) ? `(${5 - totalSpins} spins remaining)` : `(${5 - totalSpins} spin remaining)`
+        totalSpinsMsg.innerHTML = (totalSpins !== 4) ? `(${5 - totalSpins} spins remaining)` : `(${5 - totalSpins} spin remaining)`
         isSpinning = false;
         pointer.style.font = '1.2rem/0 sans-serif';
         pointer.textContent = '';
