@@ -7,7 +7,7 @@ const exp = (function() {
 
     // define each wedge
     const wedges = {
-        one: {color:"#f20707", label:"1"},
+        one: {color:"gray", label:"1"},
         ten: {color:"#f5ea25", label:"10"},
 
         two: {color:"#ff7518", label:"2"},
@@ -239,9 +239,9 @@ const exp = (function() {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
             <p>Repeatedly tap your right arrow ${speedText} to build momentum.
-            Once you build enough momentum, you'll see a "Ready!" message at the center of the wheel,
+            Once you build enough momentum, the wheel will "activate" (i.e., yellow ring will appear around the wheel),
             which means you can stop tapping and spin the wheel by pressing your spacebar.</p>
-            <p>Practice spinning by (1) tapping your right arrow ${speedText} and then (2) pressing your spacebar when the "Ready!" message appears.</p>
+            <p>Practice spinning by (1) tapping your right arrow ${speedText} until the wheel activates and then (2) pressing your spacebar.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
                 dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.ten, wedges.ten], targetPressTime, [0], 1, scoreTracker_practice);
@@ -262,7 +262,7 @@ const exp = (function() {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
             <p>Great job! Now, spin the wheel a few more time to get the hang of it. Remember:</p>
-            <p>Spin the wheel by (1) tapping your right arrow ${speedText} and until the "Ready!" message appears and then (2) pressing your spacebar.</p>
+            <p>Spin the wheel by (1) tapping your right arrow ${speedText} and until the wheel activates and then (2) pressing your spacebar.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
                 dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.ten, wedges.ten], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
