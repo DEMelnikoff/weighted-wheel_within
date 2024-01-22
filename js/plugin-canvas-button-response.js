@@ -100,7 +100,6 @@ var jsPsychCanvasButtonResponse = (function (jspsych) {
           `<div class="score-board" style="display: ${disp}">
             <div class="score-board-title">Total Points</div>
             <div class="score-board-score" id="score" >${trial.initialScore}</div>
-            <div class="score-board-spins" id="totalSpins" >(5 spins remaining)</div>
           </div>
           <div id="jspsych-canvas-button-response-stimulus">
             <canvas id="jspsych-canvas-stimulus" height="${trial.canvas_size[0]}" width="${trial.canvas_size[1]}"></canvas>

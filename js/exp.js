@@ -8,31 +8,26 @@ const exp = (function() {
     // define each wedge
     const wedges = {
         one: {color:"grey", label:"1"},
-        ten: {color:"red", label:"10"},
+        two: {color:"red", label:"2"},
 
-        two: {color:"#ff7518", label:"2"},
-        seven: {color:"#0080ff", label:"7"},
-        eight: {color:"#9f00ff", label:"8"},
-        nine: {color:"#228B22", label:"9"},
-
-        four: {color:"#ff7518", label:"4"},
-        five: {color:"#0080ff", label:"5"},
-        six: {color:"#9f00ff", label:"6"},
-        eleven: {color:"#228B22", label:"11"},
+        three: {color:"#ff7518", label:"3"},
+        four: {color:"#0080ff", label:"4"},
+        five: {color:"#9f00ff", label:"5"},
+        six: {color:"#228B22", label:"6"},
     };
 
-    const highMI_wheel1 = [ wedges.two, wedges.seven, wedges.eight, wedges.nine ];
-    const lowMI_wheel1 = [ wedges.two, wedges.eight, wedges.eight, wedges.eight ];
-    const highMI_wheel2 = [ wedges.four, wedges.five, wedges.six, wedges.eleven ];
-    const lowMI_wheel2 = [ wedges.five, wedges.five, wedges.five, wedges.eleven ];
+    const highMI_wheel1 = [ wedges.three, wedges.four, wedges.five, wedges.six ];
+    const lowMI_wheel1 = [ wedges.three, wedges.three, wedges.six, wedges.six ];
+    const highMI_wheel2 = [ wedges.three, wedges.four, wedges.five, wedges.six ];
+    const lowMI_wheel2 = [ wedges.four, wedges.four, wedges.five, wedges.five ];
 
     const wheelDraw = Math.floor(Math.random() * 2);
     let settings = {
         nSpins: 5,
         effortOrder: jsPsych.randomization.repeat(['highEffort', 'lowEffort'], 1),
         miOrder: jsPsych.randomization.repeat(['highMI', 'lowMI'], 1),
-        lowMI_wheel: [[lowMI_wheel1, lowMI_wheel2], [lowMI_wheel2, lowMI_wheel1]][wheelDraw],
-        highMI_wheel: [[highMI_wheel1, highMI_wheel2], [highMI_wheel2, highMI_wheel1]][wheelDraw],
+        lowMI_wheel: [[lowMI_wheel1, lowMI_wheel1], [lowMI_wheel2, lowMI_wheel2]][wheelDraw],
+        highMI_wheel: [highMI_wheel1, highMI_wheel2],
     };
 
     let text = {};
@@ -220,7 +215,7 @@ const exp = (function() {
         if (effort_level == 'highEffort') {
             targetPressTime = [0, .2];
         } else if (effort_level == 'lowEffort') {
-            targetPressTime = [.2, .75];
+            targetPressTime = [.2, .6];
         };
 
         console.log(targetPressTime);
@@ -229,12 +224,12 @@ const exp = (function() {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
             <p>Repeatedly tap your right arrow ${speedText} to build momentum.
-            Once you build enough momentum, the wheel will "activate" (a yellow ring will appear around the wheel),
-            which means you can stop tapping and spin the wheel by pressing your spacebar.</p>
-            <p>Practice spinning by (1) tapping your right arrow ${speedText} until the wheel activates and then (2) pressing your spacebar.</p>
+            Once you build enough momentum, a yellow ring will appear around the wheel,
+            which means that the wheel is ready to spin. To spin the wheel, stop tapping your right arrow.</p>
+            <p>Practice spinning by tapping your right arrow ${speedText} until a yellow ring appears. Then, stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.ten, wedges.ten], targetPressTime, [0], 1, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.two, wedges.two], targetPressTime, [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
             initialScore: function() {
@@ -251,11 +246,11 @@ const exp = (function() {
         const practiceWheel_2 = {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
-            <p>Great job! Now, spin the wheel a few more time to get the hang of it. Remember:</p>
-            <p>Spin the wheel by (1) tapping your right arrow ${speedText} and until the wheel activates and then (2) pressing your spacebar.</p>
+            <p>Great job! Now, spin the wheel a few more time to get the hang of it. Remember: Spin the wheel by tapping your right arrow ${speedText}. 
+            Once a yellow ring appears, you can stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.ten, wedges.ten], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.two, wedges.two], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
             },
             nSpins: 2,
             initialScore: function() {
@@ -301,16 +296,8 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>Spinning a prize wheel is a two-step process.</p>
-                    <p>First, you must build momentum by tapping the right arrow on your keyboard.
-                    Once you build enough momentum, you must press your spacebar to spin the wheel.</p>`
-                },
-            ],
-            [
-                {
-                    type: 'html',
-                    prompt: `<p>In the first two rounds of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>
-                    <p>Once you build enough momentum, you must press your spacebar to spin the wheel.</p>
+                    prompt: `<p>To spin a prize wheel, you must build up momentum by tapping the right arrow on your keyboard.</p>
+                    <p>Specifically, in the first two rounds of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>
                     <p>To practice, continue to the next page.</p>`,
                 },
             ],
@@ -413,7 +400,7 @@ const exp = (function() {
         if (effort_level == 'highEffort') {
             targetPressTime = [0, .2];
         } else if (effort_level == 'lowEffort') {
-            targetPressTime = [.2, .75];
+            targetPressTime = [.2, .6];
         };
 
         this.timeline_variables = [{round: round, sectors: sectors, mi: mi, ev: ev, sd: sd, targetPressTime: targetPressTime, guaranteedOutcome: 0}];

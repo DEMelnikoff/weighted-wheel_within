@@ -458,8 +458,8 @@ const dmPsych = (function() {
     const arc = (2 * PI) / tot; // arc sizes in radians
 
     /* spin dynamics */
-    const friction = 0.97;       // 0.995=soft, 0.99=mid, 0.98=hard
-    const vel_min = 250;       // Below that number will be treated as a stop
+    const friction = 0.98;       // 0.995=soft, 0.99=mid, 0.98=hard
+    const vel_min = 375;       // Below that number will be treated as a stop
     let vel_max = 500;           // Random ang.vel. to acceletare to 
     let vel_max_rand = 500;   
     let dt = (60 / 1000) * fpsAdjust;
@@ -501,7 +501,8 @@ const dmPsych = (function() {
             vel = vel_postDecel;
             accel = accel_postDecel;
           };
-          speedUp();
+          let launch = (timeSinceLastPress > .6) ? true : false;
+          speedUp(launch);
         } else {
           nSpeedUp = 0;
           slowDown();
@@ -521,15 +522,19 @@ const dmPsych = (function() {
         };
       };
       
+      /*
       if (e.key == " " || e.code == "Space" || e.keyCode == 32) { 
         if (!isSpinning & readyToSpin) {
           isAccelerating = true;
-          isSpinning = true;
           readyToSpin = false;
           vel_max_rand = rand(vel_max + 300, vel_max + 100);
-          spin()
+          drawSector(sectors, getIndex());
+          isSpinning = true;
+          spin();
         };
       };
+      */
+    
       
     });
 
@@ -541,7 +546,16 @@ const dmPsych = (function() {
     });
 
     /* define spinning functions */
-    const speedUp = () => {
+    const speedUp = (launch) => {
+      if (!isSpinning & readyToSpin & launch) {
+        isAccelerating = true;
+        drawSector(sectors, getIndex());
+        readyToSpin = false;
+        vel_max_rand = rand(vel_max + 300, vel_max + 100);
+        isSpinning = true;
+        console.log("spin!");
+        spin();
+      };
       nSpeedUp += fpsAdjust;
       accel += (.0005 * nSpeedUp) ** 1.5;
       currentAngle += vel*dt + .5*accel*(dt**2);
@@ -592,7 +606,7 @@ const dmPsych = (function() {
           isAccelerating = false
         };
       } else {
-        if (Math.abs(vel) >= vel_max_rand) { 
+        if (Math.abs(vel) >= vel_min) { 
           isAccelerating = false
         };
       };
@@ -616,7 +630,7 @@ const dmPsych = (function() {
       else {
         nSlowDown += fpsAdjust;
         vel_postDecel = vel * (friction ** nSlowDown);
-        if (Math.abs(vel_postDecel) > vel_min * .05) {
+        if (Math.abs(vel_postDecel) > vel_min * .02) {
           // decelerate
           currentAngle += vel_postDecel * dt;
           render(currentAngle);       
@@ -654,7 +668,7 @@ const dmPsych = (function() {
       scoreMsg.innerHTML = `<span style="color:${color}; font-weight: bolder">${score}</span>`;
       setTimeout(() => {
         scoreMsg.innerHTML = `${score}`
-        totalSpinsMsg.innerHTML = (totalSpins !== 4) ? `(${5 - totalSpins} spins remaining)` : `(${5 - totalSpins} spin remaining)`
+        //totalSpinsMsg.innerHTML = (totalSpins !== 4) ? `(${5 - totalSpins} spins remaining)` : `(${5 - totalSpins} spin remaining)`
         isSpinning = false;
         readyToSpin = false;
         pointer.style.font = '1.2rem/0 sans-serif';

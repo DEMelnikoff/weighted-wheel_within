@@ -611,14 +611,14 @@
 
 .score-board-title {
   position: absolute;
-  top: 10px;
+  top: 15px;
   font-size:25px;
 }
 
 .score-board-score {
   position: absolute;
-  top: 45px;
-  font-size:35px;
+  top: 65px;
+  font-size:45px;
 }
 
 .score-board-spins {
