@@ -7,31 +7,27 @@ const exp = (function() {
 
     // define each wedge
     const wedges = {
-        one: {color:"grey", label:"1"},
-        two: {color:"red", label:"2"},
-
-        three: {color:"#ff7518", label:"3"},
-        four: {color:"#0080ff", label:"4"},
-        five: {color:"#9f00ff", label:"5"},
-        six: {color:"#228B22", label:"6"},
-        seven: {color:"grey", label:"7"},
-        eight: {color:"red", label:"8"},
-        nine: {color:"pink", label:"9"},
-        ten: {color:"yellow", label:"10"},
+        two: {color:"#003b5c", label:"2"},
+        three: {color:"#0057e5", label:"3"},
+        four: {color:"#41b6e6", label:"4"},
+        five: {color:"#3ea908", label:"5"},
+        six: {color:"#f0cc2e", label:"6"},
+        seven: {color:"#ec894d", label:"7"},
+        eight: {color:"#e50000", label:"8"},
+        nine: {color:"#e641b6", label:"9"},
     };
 
-    const highMI_wheel1 = [ wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.nine, wedges.ten ];
-    const lowMI_wheel1 = [ wedges.three, wedges.three, wedges.three, wedges.three, wedges.ten, wedges.ten, wedges.ten, wedges.ten  ];
-    const highMI_wheel2 = [ wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.nine, wedges.ten ];
-    const lowMI_wheel2 = [ wedges.three, wedges.three, wedges.three, wedges.three, wedges.ten, wedges.ten, wedges.ten, wedges.ten  ];
+    const highMI_wheel = [ wedges.two, wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.nine ];
+    const lowMI_wheel1 = [ wedges.five, wedges.five, wedges.five, wedges.five, wedges.six, wedges.six, wedges.six, wedges.six  ];
+    const lowMI_wheel2 = [ wedges.two, wedges.two, wedges.two, wedges.two, wedges.nine, wedges.nine, wedges.nine, wedges.nine  ];
 
     const wheelDraw = Math.floor(Math.random() * 2);
     let settings = {
         nSpins: 5,
         effortOrder: jsPsych.randomization.repeat(['highEffort', 'lowEffort'], 1),
         miOrder: jsPsych.randomization.repeat(['highMI', 'lowMI'], 1),
-        lowMI_wheel: [[lowMI_wheel1, lowMI_wheel1], [lowMI_wheel2, lowMI_wheel2]][wheelDraw],
-        highMI_wheel: [highMI_wheel1, highMI_wheel2],
+        lowMI_wheel: [lowMI_wheel1, lowMI_wheel2][wheelDraw],
+        highMI_wheel: highMI_wheel,
     };
 
     let text = {};
@@ -233,7 +229,7 @@ const exp = (function() {
             <p>Practice spinning by tapping your right arrow ${speedText} until a yellow ring appears. Then, stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.one, wedges.two, wedges.two, wedges.two], targetPressTime, [0], 1, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.four, wedges.four, wedges.seven, wedges.seven, wedges.eight, wedges.eight], targetPressTime, [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
             initialScore: function() {
@@ -254,7 +250,7 @@ const exp = (function() {
             Once a yellow ring appears, you can stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.one, wedges.two, wedges.two, wedges.two], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.four, wedges.four, wedges.seven, wedges.seven, wedges.eight, wedges.eight], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
             },
             nSpins: 2,
             initialScore: function() {
