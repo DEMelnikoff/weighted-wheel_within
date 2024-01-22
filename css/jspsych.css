@@ -557,7 +557,7 @@
 
 /* spinner styling */
 #spin {
-  font: 1.2rem/0 sans-serif;
+  font: 1rem/0 sans-serif;
   user-select: none;
  /* cursor: pointer; */
   display: flex;
@@ -566,22 +566,22 @@
   position: absolute;
   top: 58%;
   left: 50%;
-  width: 20%;
-  height: 10%;
-  margin: -10%;
+  width: 16%;
+  height: 8%;
+  margin: -8%;
   color: white;
   background: white;
   box-shadow: 0 0 0 8px currentColor, 0 0px 15px 5px rgba(0, 0, 0, 0.6);
   border-radius: 10%;
-  transition: 0.2s;
+  transition: 0.8s;
 }
 
 #spin::after {
   content: '';
   position: absolute;
-  top: -28px;
-  border: 28px solid transparent;
-  border-bottom-color: white;
+  top: -48px;
+  border: 48px solid transparent;
+  border-bottom-color: currentColor;
   border-top: none;
 }
 

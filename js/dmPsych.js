@@ -453,12 +453,12 @@ const dmPsych = (function() {
     let wheelX = canvas.getBoundingClientRect()['x'] + wheelWidth / 2;
     let wheelY = canvas.getBoundingClientRect()['y'] + wheelHeight / 2;
     const tot = sectors.length; // total number of sectors
-    const rad = wheelWidth / 2; // radius of wheel
+    const rad = (wheelWidth / 2); // radius of wheel
     const PI = Math.PI;
     const arc = (2 * PI) / tot; // arc sizes in radians
 
     /* spin dynamics */
-    const friction = 0.98;       // 0.995=soft, 0.99=mid, 0.98=hard
+    const friction = 0.97;       // 0.995=soft, 0.99=mid, 0.98=hard
     const vel_min = 250;       // Below that number will be treated as a stop
     let vel_max = 500;           // Random ang.vel. to acceletare to 
     let vel_max_rand = 500;   
@@ -520,15 +520,17 @@ const dmPsych = (function() {
           lastPressTime = performance.now();
         };
       };
+      
       if (e.key == " " || e.code == "Space" || e.keyCode == 32) { 
         if (!isSpinning & readyToSpin) {
           isAccelerating = true;
           isSpinning = true;
           readyToSpin = false;
-          vel_max_rand = rand(vel_max + 180, vel_max - 30);
+          vel_max_rand = rand(vel_max + 300, vel_max + 100);
           spin()
         };
       };
+      
     });
 
     // listen for keyup
@@ -547,8 +549,9 @@ const dmPsych = (function() {
       render(currentAngle);
       if (Math.abs(vel) == vel_min || readyToSpin) {
         readyToSpin = true;
-        pointer.textContent = 'Ready!';
-        pointer.style.background = 'grey';
+        //pointer.textContent = 'Ready!';
+        //pointer.style.background = 'grey';
+        drawSector(sectors, null);
       } else {
         readyToSpin = false;
         pointer.textContent = '';
@@ -563,21 +566,15 @@ const dmPsych = (function() {
       currentAngle += vel_postDecel * dt;
       if (Math.abs(vel_postDecel) == vel_min) {
         readyToSpin = true;
-        pointer.textContent = 'Ready!';
-        pointer.style.background = 'grey';
+        //pointer.textContent = 'Ready!';
+        //pointer.style.background = 'grey';
+        drawSector(sectors, null);
       } else {
         readyToSpin = false;
         pointer.textContent = '';
         pointer.style.background = 'white';
       };
       render(currentAngle);
-      if (!isSpinning & readyToSpin) {
-          isAccelerating = true;
-          isSpinning = true;
-          readyToSpin = false;
-          vel_max_rand = rand(vel_max + 180, vel_max - 30);
-          spin()
-      };
     };
 
     const render = (deg) => {
@@ -603,13 +600,15 @@ const dmPsych = (function() {
       // accelerate
       if (isAccelerating) {
         currentAngle += dt*vel + 2*accel*(dt**2);
-        vel += dt*accel*4; // Accelerate
+        vel += dt*accel*20; // Accelerate
         if (vel >= vel_max && guaranteedOutcome[spinnerData.outcomes.length] == 1) {
           vel = vel_max;
           accel = 0;
         };
-        pointer.textContent = 'Spinning!';
-        pointer.style.background = 'grey';
+        //pointer.textContent = 'Spinning!';
+        //pointer.style.background = 'grey';
+        pointer.textContent = '';
+        pointer.style.background = 'white';
         render(currentAngle);
       }
       
@@ -617,7 +616,7 @@ const dmPsych = (function() {
       else {
         nSlowDown += fpsAdjust;
         vel_postDecel = vel * (friction ** nSlowDown);
-        if (Math.abs(vel_postDecel) > vel_min * .01) {
+        if (Math.abs(vel_postDecel) > vel_min * .05) {
           // decelerate
           currentAngle += vel_postDecel * dt;
           render(currentAngle);       
@@ -633,9 +632,9 @@ const dmPsych = (function() {
           spinnerData.outcomes.push(parseFloat(sector.label));
           drawSector(sectors, getIndex());
           updateScore(parseFloat(sector.label), sector.color);
-          pointer.style.font = '2rem/0 sans-serif';
-          pointer.textContent = sector.label;
-          pointer.style.background = sector.color;
+          //pointer.style.font = '2rem/0 sans-serif';
+          //pointer.textContent = sector.label;
+          //pointer.style.background = sector.color;
           pressTimes.shift();
           spinnerData.color = sector.color;
           spinnerData.pressTimes.push(pressTimes);
@@ -657,6 +656,7 @@ const dmPsych = (function() {
         scoreMsg.innerHTML = `${score}`
         totalSpinsMsg.innerHTML = (totalSpins !== 4) ? `(${5 - totalSpins} spins remaining)` : `(${5 - totalSpins} spin remaining)`
         isSpinning = false;
+        readyToSpin = false;
         pointer.style.font = '1.2rem/0 sans-serif';
         pointer.textContent = '';
         pointer.style.background = 'white';
@@ -680,6 +680,18 @@ const dmPsych = (function() {
 
     /* Draw sectors and prizes texts to canvas */
     const drawSector = (sectors, sector) => {
+      if (readyToSpin || isSpinning) {
+        ctx.lineWidth = 20;
+        ctx.strokeStyle = 'yellow';
+      } else {
+        ctx.lineWidth = 0;
+        ctx.strokeStyle = 'white';
+      };
+      ctx.beginPath();
+      ctx.arc(rad, rad, rad-10, 0, 2 * Math.PI);
+      ctx.stroke();
+      ctx.closePath();
+
       for (let i = 0; i < sectors.length; i++) {
         const ang = arc * i;
         ctx.save();
@@ -687,7 +699,7 @@ const dmPsych = (function() {
         ctx.beginPath();
         ctx.fillStyle = sectors[i].color;
         ctx.moveTo(rad, rad);
-        ctx.arc(rad, rad, rad, ang, ang + arc);
+        ctx.arc(rad, rad, rad-10, ang, ang + arc);
         ctx.lineTo(rad, rad);
         ctx.fill();
         // TEXT
@@ -695,7 +707,7 @@ const dmPsych = (function() {
         ctx.rotate( (ang + arc / 2) + arc );
         ctx.textAlign = "center";
         ctx.fillStyle = "#fff";
-        /*
+        
         if (isSpinning && i == sector) {
           ctx.font = "bolder 50px sans-serif"
           ctx.strokeStyle = 'black';
@@ -703,10 +715,9 @@ const dmPsych = (function() {
           ctx.strokeText(sectors[i].label, 0, -140);
           ctx.fillText(sectors[i].label, 0, -140);
         } else {
-        */
           ctx.font = "bold 50px sans-serif"
           ctx.fillText(sectors[i].label, 0, -140);
-        //}
+        }
         // RESTORE
         ctx.restore();
       }

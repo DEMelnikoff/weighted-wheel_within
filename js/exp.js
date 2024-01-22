@@ -7,31 +7,32 @@ const exp = (function() {
 
     // define each wedge
     const wedges = {
-        one: {color:"#fe0000", label:"1"},
-        two: {color:"#ff7518", label:"2"},
-        three: {color:"#228B22", label:"3"},
-        four: {color:"#0080ff", label:"4"}, 
-        five: {color:"#ff7518", label:"5"}, 
-        six: {color:"#9f00ff", label:"6"},  
-        seven: {color:"#ff7518", label:"7"},
-        eight: {color:"#228B22", label:"8"},
-        nine: {color:"#228B22", label:"9"},
+        one: {color:"#f20707", label:"1"},
         ten: {color:"#f5ea25", label:"10"},
-        eleven: {color:"#228B22", label:"11"}, 
-        twelve: {color:"#001280", label:"12"},
-        thirteen: {color:"#806b00", label:"13"},
+
+        two: {color:"#ff7518", label:"2"},
+        seven: {color:"#0080ff", label:"7"},
+        eight: {color:"#9f00ff", label:"8"},
+        nine: {color:"#228B22", label:"9"},
+
+        four: {color:"#ff7518", label:"4"},
+        five: {color:"#0080ff", label:"5"},
+        six: {color:"#9f00ff", label:"6"},
+        eleven: {color:"#228B22", label:"11"},
     };
 
-    const highMI_wheel = [ wedges.two, wedges.four, wedges.six, wedges.eight ]
-    const lowMI_wheel1 = [ wedges.four, wedges.four, wedges.six, wedges.six ]
-    const lowMI_wheel2 = [ wedges.two, wedges.two, wedges.eight, wedges.eight ]
+    const highMI_wheel1 = [ wedges.two, wedges.seven, wedges.eight, wedges.nine ];
+    const lowMI_wheel1 = [ wedges.two, wedges.eight, wedges.eight, wedges.eight ];
+    const highMI_wheel2 = [ wedges.four, wedges.five, wedges.six, wedges.eleven ];
+    const lowMI_wheel2 = [ wedges.five, wedges.five, wedges.five, wedges.eleven ];
 
     const wheelDraw = Math.floor(Math.random() * 2);
     let settings = {
         nSpins: 5,
         effortOrder: jsPsych.randomization.repeat(['highEffort', 'lowEffort'], 1),
         miOrder: jsPsych.randomization.repeat(['highMI', 'lowMI'], 1),
-        lowMI_wheel: [lowMI_wheel1, lowMI_wheel2][wheelDraw],
+        lowMI_wheel: [[lowMI_wheel1, lowMI_wheel2], [lowMI_wheel2, lowMI_wheel1]][wheelDraw],
+        highMI_wheel: [[highMI_wheel1, highMI_wheel2], [highMI_wheel2, highMI_wheel1]][wheelDraw],
     };
 
     let text = {};
@@ -409,12 +410,12 @@ const exp = (function() {
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi, targetPressTime;
         if (mi_level == 'highMI') {
-            sectors = highMI_wheel;
+            sectors = settings.highMI_wheel.pop();
             ev = 5.5;
             sd = 3.5;
             mi = 2;
         } else if (mi_level == 'lowMI') {
-            sectors = settings.lowMI_wheel;
+            sectors = settings.lowMI_wheel.pop();
             ev = 5.5;
             sd = 3.5;
             mi = .81;
