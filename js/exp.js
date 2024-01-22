@@ -218,8 +218,6 @@ const exp = (function() {
             targetPressTime = [.2, .6];
         };
 
-        console.log(targetPressTime);
-
         const practiceWheel_1 = {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
@@ -385,12 +383,12 @@ const exp = (function() {
         // set sectors, ev, sd, and mi
         let sectors, ev, sd, mi, targetPressTime;
         if (mi_level == 'highMI') {
-            sectors = settings.highMI_wheel.pop();
+            sectors = settings.highMI_wheel;
             ev = 5.5;
             sd = 3.5;
             mi = 2;
         } else if (mi_level == 'lowMI') {
-            sectors = settings.lowMI_wheel.pop();
+            sectors = settings.lowMI_wheel;
             ev = 5.5;
             sd = 3.5;
             mi = .81;
@@ -402,18 +400,6 @@ const exp = (function() {
         } else if (effort_level == 'lowEffort') {
             targetPressTime = [.2, .6];
         };
-
-        this.timeline_variables = [{round: round, sectors: sectors, mi: mi, ev: ev, sd: sd, targetPressTime: targetPressTime, guaranteedOutcome: 0}];
-
-        const makeTokenArray = function() {
-            return jsPsych.randomization.repeat(['plus', 'minus', 'normal', 'normal', 'normal'], 1);
-        };
-
-        let tokenArray = makeTokenArray();
-        let outcome, color, bonusType;
-        let currentStreak = 0;
-        let finalStreak = 0;
-        let trial = 1;
 
         const wheel = {
             type: jsPsychCanvasButtonResponse,
@@ -429,11 +415,10 @@ const exp = (function() {
             data: {round: jsPsych.timelineVariable('round'), effort_condition: effort_level, mi_condition: mi_level, targetPressTime: jsPsych.timelineVariable('targetPressTime'), sectors: jsPsych.timelineVariable('sectors'), ev: jsPsych.timelineVariable('ev'), sd: jsPsych.timelineVariable('sd')},
             on_finish: function(data) {
                 scoreTracker = data.score;
-                outcome = data.outcomes;
-                color = data.color;
             },
         };
 
+        this.timeline_variables = [{round: round, sectors: sectors, mi: mi, ev: ev, sd: sd, targetPressTime: targetPressTime, guaranteedOutcome: 0}];
         this.timeline = [wheel];
     }
 
