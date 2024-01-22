@@ -304,8 +304,14 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>In Spin the Wheel, you'll win points by spinning various prize wheels. Your goal is to win as many points as possible.</p>
-                    <p>Spinning a prize wheel is a two-step process.</p>
+                    prompt: `<p>In Spin the Wheel, you'll win points by spinning various prize wheels.</p>
+                    <p>Your goal is to win as many points as possible.</p>`
+                },
+            ],
+            [
+                {
+                    type: 'html',
+                    prompt: `<p>Spinning a prize wheel is a two-step process.</p>
                     <p>First, you must build momentum by tapping the right arrow on your keyboard.
                     Once you build enough momentum, you must press your spacebar to spin the wheel.</p>`
                 },
