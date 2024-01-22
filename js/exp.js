@@ -7,8 +7,8 @@ const exp = (function() {
 
     // define each wedge
     const wedges = {
-        one: {color:"gray", label:"1"},
-        ten: {color:"#f5ea25", label:"10"},
+        one: {color:"grey", label:"1"},
+        ten: {color:"red", label:"10"},
 
         two: {color:"#ff7518", label:"2"},
         seven: {color:"#0080ff", label:"7"},
