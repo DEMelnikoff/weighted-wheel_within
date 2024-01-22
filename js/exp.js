@@ -14,12 +14,16 @@ const exp = (function() {
         four: {color:"#0080ff", label:"4"},
         five: {color:"#9f00ff", label:"5"},
         six: {color:"#228B22", label:"6"},
+        seven: {color:"grey", label:"7"},
+        eight: {color:"red", label:"8"},
+        nine: {color:"pink", label:"9"},
+        ten: {color:"yellow", label:"10"},
     };
 
-    const highMI_wheel1 = [ wedges.three, wedges.four, wedges.five, wedges.six ];
-    const lowMI_wheel1 = [ wedges.three, wedges.three, wedges.six, wedges.six ];
-    const highMI_wheel2 = [ wedges.three, wedges.four, wedges.five, wedges.six ];
-    const lowMI_wheel2 = [ wedges.four, wedges.four, wedges.five, wedges.five ];
+    const highMI_wheel1 = [ wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.nine, wedges.ten ];
+    const lowMI_wheel1 = [ wedges.three, wedges.three, wedges.three, wedges.three, wedges.ten, wedges.ten, wedges.ten, wedges.ten  ];
+    const highMI_wheel2 = [ wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.nine, wedges.ten ];
+    const lowMI_wheel2 = [ wedges.three, wedges.three, wedges.three, wedges.three, wedges.ten, wedges.ten, wedges.ten, wedges.ten  ];
 
     const wheelDraw = Math.floor(Math.random() * 2);
     let settings = {
@@ -229,7 +233,7 @@ const exp = (function() {
             <p>Practice spinning by tapping your right arrow ${speedText} until a yellow ring appears. Then, stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.two, wedges.two], targetPressTime, [0], 1, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.one, wedges.two, wedges.two, wedges.two], targetPressTime, [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
             initialScore: function() {
@@ -250,7 +254,7 @@ const exp = (function() {
             Once a yellow ring appears, you can stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.two, wedges.two], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [wedges.one, wedges.one, wedges.one, wedges.two, wedges.two, wedges.two], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
             },
             nSpins: 2,
             initialScore: function() {
