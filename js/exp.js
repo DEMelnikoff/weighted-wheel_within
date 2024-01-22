@@ -239,7 +239,7 @@ const exp = (function() {
             type: jsPsychCanvasButtonResponse,
             prompt: `<div class='spin-instructions'>
             <p>Repeatedly tap your right arrow ${speedText} to build momentum.
-            Once you build enough momentum, the wheel will "activate" (i.e., yellow ring will appear around the wheel),
+            Once you build enough momentum, the wheel will "activate" (a yellow ring will appear around the wheel),
             which means you can stop tapping and spin the wheel by pressing your spacebar.</p>
             <p>Practice spinning by (1) tapping your right arrow ${speedText} until the wheel activates and then (2) pressing your spacebar.</p>
             </div>`,
