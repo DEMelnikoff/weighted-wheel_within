@@ -76,7 +76,7 @@ const exp = (function() {
     function MakeAttnChk(settings, round) {
 
         let roundNumbers = (round == 1) ? 'Rounds 1 and 2' : 'Rounds 3 and 4';
-        let correctAnswers = [`Win as many points as possible.`, `5`];
+        let correctAnswers = [];
 
         if (settings.effortOrder[0] == 'highEffort' && round == 1 || settings.effortOrder[1] == 'highEffort' && round == 2) {
             correctAnswers.push(`In ${roundNumbers}, I must tap my right arrow as fast as possible to build momentum.`);
@@ -87,22 +87,12 @@ const exp = (function() {
         const attnChk = {
            type: jsPsychSurveyMultiChoice,
             preamble: `<div class='parent' style='text-align: left; color: rgb(109, 112, 114)'>
-                <p><strong>Please answer the following questions about ${roundNumbers} of Spin the Wheel.</strong></p>
+                <p><strong>Please answer the following question about ${roundNumbers} of Spin the Wheel.</strong></p>
                 </div>`,
             questions: [
                 {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>What must you do to maximize your chances of winning a $100.00 bonus?</div>", 
-                    name: `attnChk1`, 
-                    options: [`Win as many points as possible.`, `Spin the wheel as fast as possible.`],
-                },
-                {
-                    prompt: `<div style='color: rgb(109, 112, 114)'>How many times will you spin the wheel per round?</div>`, 
-                    name: `attnChk2`, 
-                    options: [`0`, `5`, `10`],
-                },
-                {
                     prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
-                    name: `attnChk3`, 
+                    name: `attnChk1`, 
                     options: [`In ${roundNumbers}, I must tap my right arrow as fast as possible to build momentum.`, `In ${roundNumbers}, I must tap my right arrow at a moderate pace to build momentum.`],
                 },
             ],
