@@ -715,9 +715,6 @@ const dmPsych = (function() {
         ctx.moveTo(rad, rad);
         ctx.arc(rad, rad, rad-10, ang, ang + arc);
         ctx.lineTo(rad, rad);
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'white';
-        ctx.stroke();
         ctx.fill();
         // TEXT
         ctx.translate(rad, rad);

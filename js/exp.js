@@ -18,8 +18,8 @@ const exp = (function() {
     };
 
     const highMI_wheel = [ wedges.two, wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.nine ];
-    const lowMI_wheel1 = [ wedges.four, wedges.four, wedges.four, wedges.four, wedges.seven, wedges.seven, wedges.seven, wedges.seven  ];
-    const lowMI_wheel2 = [ wedges.three, wedges.three, wedges.three, wedges.three, wedges.eight, wedges.eight, wedges.eight, wedges.eight  ];
+    const lowMI_wheel1 = [ wedges.four, wedges.seven ];
+    const lowMI_wheel2 = [ wedges.three, wedges.eight ];
 
     const wheelDraw = Math.floor(Math.random() * 2);
     let settings = {
@@ -227,7 +227,7 @@ const exp = (function() {
             <p>Practice spinning by tapping your right arrow ${speedText} until a yellow ring appears. Then, stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.four, wedges.four, wedges.seven, wedges.seven, wedges.eight, wedges.eight], targetPressTime, [0], 1, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [ wedges.three, wedges.four, wedges.seven, wedges.eight ], targetPressTime, [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
             initialScore: function() {
@@ -248,7 +248,7 @@ const exp = (function() {
             Once a yellow ring appears, you can stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [wedges.three, wedges.three, wedges.four, wedges.four, wedges.seven, wedges.seven, wedges.eight, wedges.eight], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [ wedges.three, wedges.four, wedges.seven, wedges.eight ], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
             },
             nSpins: 2,
             initialScore: function() {
@@ -442,7 +442,7 @@ const exp = (function() {
         this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
         <p>To what extent did you find Round ${round} <b>immersive</b> and <b>engaging</b>?</p>
-        <p>Report how <b>immersive</b> and <b>engaging</b> you found Round 1 by answering the following questions.</p></div>`;
+        <p>Report how <b>immersive</b> and <b>engaging</b> you found Round ${round} by answering the following questions.</p></div>`;
         this.questions = [
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>How <b>immersive</b> was Round ${round} of Spin the Wheel?</div>`,
