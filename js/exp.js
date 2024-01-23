@@ -438,35 +438,34 @@ const exp = (function() {
 
     // constructor functions
     function MakeFlowQs(round) {
-        const secondVersion = (round == 1) ? 'Round 1' : 'Round 2';
         this.type = jsPsychSurveyLikert;
         this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
-        <p>During Round ${round}, how <b>immersed</b> and <b>engaged</b> did you feel in the game?</p>
-        <p>Report how <b>immersed</b> and <b>engaged</b> you felt by answering the following questions.</p></div>`;
+        <p>To what extent did you find Round ${round} <b>immersive</b> and <b>engaging</b>?</p>
+        <p>Report how <b>immersive</b> and <b>engaging</b> you found Round 1 by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <b>absorbed</b> did you feel in the game?</div>`,
-                name: `absorbed`,
-                labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>immersive</b> was Round ${round} of Spin the Wheel?</div>`,
+                name: `immersive`,
+                labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <b>immersed</b> did you feel in the game?</div>`,
-                name: `immersed`,
-                labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engaging</b> was Round ${round} of Spin the Wheel?</div>`,
+                name: `engaging`,
+                labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <b>engaged</b> did you feel in the game?</div>`,
-                name: `engaged`,
-                labels: ["0<br>Not very engaged", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engaged than I've ever felt"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engrossing</b> was Round ${round} of Spin the Wheel?</div>`,
+                name: `engrossing`,
+                labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>During Round ${round}, how <b>engrossed</b> did you feel in the game?</div>`,
-                name: `engrossed`,
-                labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"],
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>boring</b> was Round ${round} of Spin the Wheel?</div>`,
+                name: `boring`,
+                labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
                 required: true,
             },
         ];
