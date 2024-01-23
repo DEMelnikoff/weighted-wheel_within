@@ -534,6 +534,30 @@ const exp = (function() {
         };
     };
 
+    const freeResponse = {
+        type: jsPsychSurvey,
+        pages: [
+            [
+                {
+                    type: 'multi-choice',
+                    prompt: `If you had to choose, which wheel was more immersive and engaging?`,
+                    options: ['The wheel from Round 1', 'The wheel from Round 2'],
+                    name: 'forcedChoice',
+                },
+                {
+                    type: 'text',
+                    prompt: `In the space below, please explain your answer in as much detail as possible.`,
+                    textbox_rows: 7,
+                    name: 'explanation',
+                },
+            ],
+        ],
+        button_label_finish: 'Next',
+        on_finish: (data) => {
+            dmPsych.saveSurveyData(data); 
+        },
+    };
+
     // timeline: first wheel
     p.practice = {
         timeline: [howToSpin_heavy, practiceWheel_heavy, howToSpin_light, practiceWheel_light],
@@ -543,7 +567,7 @@ const exp = (function() {
     };
 
     p.wheel_2 = {
-        timeline: [attnChk2, new MakeSpinLoop(2), new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2)],
+        timeline: [attnChk2, new MakeSpinLoop(2), new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2), freeResponse],
     };
 
     p.wheel_3 = {
@@ -576,30 +600,6 @@ const exp = (function() {
             show_clickable_nav: true,
             post_trial_gap: 500,
             allow_keys: false,
-        };
-
-        const freeResponse = {
-            type: jsPsychSurvey,
-            pages: [
-                [
-                    {
-                        type: 'multi-choice',
-                        prompt: `If you had to choose, which round of Spin the Wheel did you find most boring?`,
-                        options: ['Round 1', 'Round 2'],
-                        name: 'forcedChoice',
-                    },
-                    {
-                        type: 'text',
-                        prompt: `In the space below, please explain your answer in as much detail as possible.`,
-                        textbox_rows: 7,
-                        name: 'explanation',
-                    },
-                ],
-            ],
-            button_label_finish: 'Next',
-            on_finish: (data) => {
-                dmPsych.saveSurveyData(data); 
-            },
         };
 
         const meanOfEffScale = ['-2<br>Strongly<br>Disagree', '-1<br>Disagree', '0<br>Neither agree<br>nor disagree', '1<br>Agree', '2<br>Strongly<br>Agree'];
