@@ -18,8 +18,8 @@ const exp = (function() {
     };
 
     const highMI_wheel = [ wedges.two, wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.nine ];
-    const lowMI_wheel1 = [ wedges.five, wedges.five, wedges.five, wedges.five, wedges.six, wedges.six, wedges.six, wedges.six  ];
-    const lowMI_wheel2 = [ wedges.two, wedges.two, wedges.two, wedges.two, wedges.nine, wedges.nine, wedges.nine, wedges.nine  ];
+    const lowMI_wheel1 = [ wedges.four, wedges.four, wedges.four, wedges.four, wedges.seven, wedges.seven, wedges.seven, wedges.seven  ];
+    const lowMI_wheel2 = [ wedges.three, wedges.three, wedges.three, wedges.three, wedges.eight, wedges.eight, wedges.eight, wedges.eight  ];
 
     const wheelDraw = Math.floor(Math.random() * 2);
     let settings = {

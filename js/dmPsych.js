@@ -459,7 +459,7 @@ const dmPsych = (function() {
 
     /* spin dynamics */
     const friction = 0.98;       // 0.995=soft, 0.99=mid, 0.98=hard
-    const vel_min = 375;       // Below that number will be treated as a stop
+    const vel_min = 350;       // Below that number will be treated as a stop
     let vel_max = 500;           // Random ang.vel. to acceletare to 
     let vel_max_rand = 500;   
     let dt = (60 / 1000) * fpsAdjust;
