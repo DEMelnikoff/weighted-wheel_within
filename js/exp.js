@@ -520,7 +520,7 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>In Round ${round}, was the wheel too easy, too difficult, or somewhere in between?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>Was Round ${round} too easy, too difficult, or somewhere in between?</div>`,
                 name: `scb`,
                 labels: scbScale,
                 required: true,
