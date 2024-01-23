@@ -33,13 +33,17 @@ const exp = (function() {
     let text = {};
 
     if (settings.effortOrder[0] == 'highEffort') {
-        text.speed1_r1 = "<strong> as fast as possible</strong>";
+        text.weight_r1 = "<strong>heavy</strong>";
+        text.speed1_r1 = "<strong>as fast as possible</strong>";
         text.speed2_r1 = "If you do not tap your right arrow as fast as possible, the wheel will not build enough momentum to spin.";
+        text.weight_r2 = "<strong>light-weight</strong>";
         text.speed1_r2 = "<strong>at a moderate pace</strong>";
         text.speed2_r2 = "If you tap your right arrow either too quickly or too slowly, the wheel will not build enough momentum to spin.";
     } else if (settings.effortOrder[0] == 'lowEffort') {
+        text.weight_r1 = "<strong>light-weight</strong>";
         text.speed1_r1 = "<strong>at a moderate pace</strong>";
         text.speed2_r1 = "If you tap your right arrow either too quickly or too slowly, the wheel will not build enough momentum to spin.";
+        text.weight_r2 = "<strong>heavy</strong>";
         text.speed1_r2 = "<strong> as fast as possible</strong>";
         text.speed2_r2 = "If you do not tap your right arrow as fast as possible, the wheel will not build enough momentum to spin.";
     };
@@ -60,35 +64,85 @@ const exp = (function() {
     *
     */
 
-    const convertStringToHTML = htmlString => {
-        const parser = new DOMParser();
-        const html = parser.parseFromString(htmlString, 'text/html');
+    function MakePracticeWheel(weight) {
 
-        return html;
-    }
+        const speedText = (weight == 'heavy') ? "<strong> as fast as possible</strong>" : "<strong>at a moderate pace</strong>";
+        const targetPressTime = (weight == 'heavy') ? [0, .2] : [.2, .6];
+        const weightText = (weight == 'heavy') ? 'heavy' : 'light-weight';
 
+        const practiceWheel_1 = {
+            type: jsPsychCanvasButtonResponse,
+            prompt: `<div class='spin-instructions'>
+            <p>This wheel is <b>${weightText}</b>. To spin it, repeatedly tap your right arrow ${speedText} to build momentum.
+            Once you build enough momentum, a yellow ring will appear around the wheel,
+            which means that the wheel is ready to spin. To spin the wheel, stop tapping your right arrow.</p>
+            <p>Practice spinning <b>${weightText}</b> wheels by tapping your right arrow ${speedText} until a yellow ring appears. Then, stop tapping to spin the wheel.</p>
+            </div>`,
+            stimulus: function(c, spinnerData) {
+                dmPsych.spinner(c, spinnerData, [ wedges.three, wedges.four, wedges.seven, wedges.eight ], targetPressTime, [0], 1, scoreTracker_practice);
+            },
+            nSpins: 1,
+            initialScore: function() {
+                return scoreTracker_practice
+            },
+            show_scoreboard: false,
+            canvas_size: [500, 500],
+            post_trial_gap: 500,
+            on_finish: function(data) {
+                scoreTracker_practice = data.score
+            }
+        };
+
+        const practiceWheel_2 = {
+            type: jsPsychCanvasButtonResponse,
+            prompt: `<div class='spin-instructions'>
+            <p>Great job! Now, spin the <b>${weightText}</b> wheel a few more time to get the hang of it. Remember: To spin <b>${weightText}</b> wheels, tap your right arrow ${speedText}. 
+            Once a yellow ring appears, stop tapping to spin the wheel.</p>
+            </div>`,
+            stimulus: function(c, spinnerData) {
+                dmPsych.spinner(c, spinnerData, [ wedges.three, wedges.four, wedges.seven, wedges.eight ], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
+            },
+            nSpins: 2,
+            initialScore: function() {
+                return scoreTracker_practice
+            },
+            show_scoreboard: false,
+            canvas_size: [500, 500],
+            on_finish: function(data) {
+                scoreTracker_practice = data.score
+            }
+        };
+
+        this.timeline = [practiceWheel_1, practiceWheel_2];
+    };
 
     function MakeAttnChk(settings, round) {
 
-        let roundNumbers = (round == 1) ? 'Rounds 1 and 2' : 'Rounds 3 and 4';
         let correctAnswers = [];
 
-        if (settings.effortOrder[0] == 'highEffort' && round == 1 || settings.effortOrder[1] == 'highEffort' && round == 2) {
-            correctAnswers.push(`In ${roundNumbers}, I must tap my right arrow as fast as possible to build momentum.`);
-        } else if (settings.effortOrder[0] == 'lowEffort' && round == 1 || settings.effortOrder[1] == 'lowEffort' && round == 2) {
-            correctAnswers.push(`In ${roundNumbers}, I must tap my right arrow at a moderate pace to build momentum.`);
+        if (settings.effortOrder[0] == 'highEffort' && round <= 2 || settings.effortOrder[1] == 'highEffort' && round >= 3) {
+            correctAnswers.push(`Heavy`);
+            correctAnswers.push(`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`);
+        } else if (settings.effortOrder[0] == 'lowEffort' && round <= 2 || settings.effortOrder[1] == 'lowEffort' && round >= 3) {
+            correctAnswers.push(`Light-weight`);
+            correctAnswers.push(`In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`);
         };
 
         const attnChk = {
            type: jsPsychSurveyMultiChoice,
             preamble: `<div class='parent' style='text-align: left; color: rgb(109, 112, 114)'>
-                <p><strong>Please answer the following question about ${roundNumbers} of Spin the Wheel.</strong></p>
+                <p><strong>Please answer the following questions about Round ${round} of Spin the Wheel.</strong></p>
                 </div>`,
             questions: [
                 {
-                    prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
+                    prompt: `<div style='color: rgb(109, 112, 114)'>In Round ${round}, is the wheel heavy or light-weight?</div>`, 
                     name: `attnChk1`, 
-                    options: [`In ${roundNumbers}, I must tap my right arrow as fast as possible to build momentum.`, `In ${roundNumbers}, I must tap my right arrow at a moderate pace to build momentum.`],
+                    options: [`Heavy`, `Light-weight`],
+                },
+                {
+                    prompt: "<div style='color: rgb(109, 112, 114)'>Which of the following statements is true?</div>", 
+                    name: `attnChk2`, 
+                    options: [`In Round ${round}, I must tap my right arrow as fast as possible to build momentum.`, `In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`],
                 },
             ],
             scale_width: 500,
@@ -120,7 +174,7 @@ const exp = (function() {
         };
 
 
-        const practiceComplete_1 = {
+        const aboutRound1 = {
             type: jsPsychSurvey,
             pages: [
                 [
@@ -134,7 +188,8 @@ const exp = (function() {
                     {
                         type: 'html',
                         prompt: `<p>In Spin the Wheel, the number of points you win for each spin depends on where the wheel lands. For example, if the wheel lands on a 3, you'll earn 3 points.</p>
-                        <p>Throughout the game, your total number of points will be displayed at the top of the screen.</p>`
+                        <p>Throughout the game, your total number of points will be displayed at the top of the screen.</p>
+                        <p>Remember: Your goal is to win as many points as possible.</p>`
                     },
                 ],
                 [
@@ -143,35 +198,66 @@ const exp = (function() {
                         prompt: `<p>In each round of Spin the Wheel, you'll spin the wheel <b>5 times</b>.</p>`
                     },
                 ],
-            ],
-            button_label_finish: 'Next',
-        };
-
-        const practiceComplete_2 = {
-            type: jsPsychSurvey,
-            pages: [
                 [
                     {
                         type: 'html',
-                        prompt: `<p><b>Practice is now complete!</b></p>
-                        <p>Continue to play Rounds 3 and 4 of Spin the Wheel.</p>`,
-
+                        prompt: `<p>In the first round of Spin the Wheel, you'll be spinning a ${text.weight_r1} wheel.</p>
+                        <p>Accordingly, in Round 1, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>`
                     },
                 ],
             ],
             button_label_finish: 'Next',
         };
 
-        const instLoop_1 = {
-            timeline: [practiceComplete_1, attnChk, conditionalNode],
-            loop_function: () => {
-                const fail = jsPsych.data.get().last(2).select('totalErrors').sum() > 0 ? true : false;
-                return fail;
-            },
+        const aboutRound2 = {
+            type: jsPsychSurvey,
+            pages: [
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>Round 1 of Spin the Wheel is now complete! Next, you'll play Round 2.</p>
+                        <p>In Round 2, you'll spin another ${text.weight_r1} wheel.</p>
+                        <p>Accordingly, in Round 2, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>`
+                    },
+                ],
+            ],
+            button_label_finish: 'Next',
         };
 
-        const instLoop_2 = {
-            timeline: [practiceComplete_2, attnChk, conditionalNode],
+        const aboutRound3 = {
+            type: jsPsychSurvey,
+            pages: [
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>Round 2 of Spin the Wheel is now complete! Next, you'll play Round 3.</p>
+                        <p>In Round 3, you'll be spinning a ${text.weight_r2} wheel.</p>
+                        <p>Accordingly, in Round 3, you'll need to tap your right arrow ${text.speed1_r2}. ${text.speed2_r2}</p>`
+                    },
+                ],
+            ],
+            button_label_finish: 'Next',
+        };
+
+        const aboutRound4 = {
+            type: jsPsychSurvey,
+            pages: [
+                [
+                    {
+                        type: 'html',
+                        prompt: `<p>Round 3 of Spin the Wheel is now complete! Next, you'll play Round 4.</p>
+                        <p>In Round 4, you'll be spinning another ${text.weight_r2} wheel.</p>
+                        <p>Accordingly, in Round 4, you'll need to tap your right arrow ${text.speed1_r2}. ${text.speed2_r2}</p>`
+                    },
+                ],
+            ],
+            button_label_finish: 'Next',
+        };
+
+        const aboutRound = (round == 1) ? aboutRound1 : (round == 2) ? aboutRound2 : (round == 3) ? aboutRound3 : aboutRound4;
+
+        const instLoop = {
+            timeline: [aboutRound, attnChk, conditionalNode],
             loop_function: () => {
                 const fail = jsPsych.data.get().last(2).select('totalErrors').sum() > 0 ? true : false;
                 return fail;
@@ -184,15 +270,8 @@ const exp = (function() {
                 [
                     {
                         type: 'html',
-                        prompt: function() {
-                            if (round == 1) {
-                                return `<p>You're now ready to play Round 1 of Spin the Wheel.</p>
-                                <p>To play Round 1, continue to the next screen.</p>`
-                            } else {
-                                return `<p>You're now ready to play Round 3 of Spin the Wheel.</p>
-                                <p>To play Round 3, continue to the next screen.</p>`
-                            }
-                        }
+                        prompt: `<p>You're now ready to play Round ${round} of Spin the Wheel.</p>
+                        <p>To play Round ${round}, continue to the next screen.</p>`
                     },
                 ],
 
@@ -200,68 +279,7 @@ const exp = (function() {
             button_label_finish: 'Next',
         };
 
-        this.timeline = (round == 1) ? [instLoop_1, readyToPlay] : [instLoop_2, readyToPlay];
-    }
-
-
-    function MakePracticeWheel(text, round) {
-
-        let speedText = (round == 1) ? text.speed1_r1 : text.speed1_r2;
-        let targetPressTime;
-
-        const effort_level = [settings.effortOrder[0], settings.effortOrder[0], settings.effortOrder[1], settings.effortOrder[1]][round - 1];
-
-        // set target time between button presses
-        if (effort_level == 'highEffort') {
-            targetPressTime = [0, .2];
-        } else if (effort_level == 'lowEffort') {
-            targetPressTime = [.2, .6];
-        };
-
-        const practiceWheel_1 = {
-            type: jsPsychCanvasButtonResponse,
-            prompt: `<div class='spin-instructions'>
-            <p>Repeatedly tap your right arrow ${speedText} to build momentum.
-            Once you build enough momentum, a yellow ring will appear around the wheel,
-            which means that the wheel is ready to spin. To spin the wheel, stop tapping your right arrow.</p>
-            <p>Practice spinning by tapping your right arrow ${speedText} until a yellow ring appears. Then, stop tapping to spin the wheel.</p>
-            </div>`,
-            stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [ wedges.three, wedges.four, wedges.seven, wedges.eight ], targetPressTime, [0], 1, scoreTracker_practice);
-            },
-            nSpins: 1,
-            initialScore: function() {
-                return scoreTracker_practice
-            },
-            show_scoreboard: false,
-            canvas_size: [500, 500],
-            post_trial_gap: 500,
-            on_finish: function(data) {
-                scoreTracker_practice = data.score
-            }
-        };
-
-        const practiceWheel_2 = {
-            type: jsPsychCanvasButtonResponse,
-            prompt: `<div class='spin-instructions'>
-            <p>Great job! Now, spin the wheel a few more time to get the hang of it. Remember: Spin the wheel by tapping your right arrow ${speedText}. 
-            Once a yellow ring appears, you can stop tapping to spin the wheel.</p>
-            </div>`,
-            stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [ wedges.three, wedges.four, wedges.seven, wedges.eight ], targetPressTime, [0, 0, 0], 3, scoreTracker_practice);
-            },
-            nSpins: 2,
-            initialScore: function() {
-                return scoreTracker_practice
-            },
-            show_scoreboard: false,
-            canvas_size: [500, 500],
-            on_finish: function(data) {
-                scoreTracker_practice = data.score
-            }
-        };
-
-        this.timeline = [practiceWheel_1, practiceWheel_2];
+        this.timeline = [instLoop, readyToPlay];
     };
 
     p.consent = {
@@ -270,7 +288,7 @@ const exp = (function() {
         cont_btn: "advance",
     };
 
-    p.intro_1 = {
+    const howToSpin_heavy = {
         type: jsPsychSurvey,
         pages: [
             [
@@ -294,75 +312,51 @@ const exp = (function() {
             [
                 {
                     type: 'html',
-                    prompt: `<p>To spin a prize wheel, you must build up momentum by tapping the right arrow on your keyboard.</p>
-                    <p>Specifically, in the first two rounds of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r1}. ${text.speed2_r1}</p>
-                    <p>To practice, continue to the next page.</p>`,
+                    prompt: `<p>In Spin the Wheel, there are two different types of wheels: <b>heavy</b> wheels (which are difficult to spin) and <b>light-weight</b> wheels (which are easy to spin).</p>`
                 },
             ],
-
+            [
+                {
+                    type: 'html',
+                    prompt: `<p>To spin a heavy wheel, you must build momentum by tapping the right arrow on your keyboard <b>as fast as possible</b>. 
+                    If you do not tap your right arrow as fast as possible, the wheel will not build enough momentum to spin.</p>
+                    <p>Next, you'll practice spinning heavy wheels. Then, you'll learn to spin light-weight wheels.</p>`
+                },
+            ],
         ],
         button_label_finish: 'Next'
     };
 
-    p.intro_2 = {
+    const howToSpin_light = {
         type: jsPsychSurvey,
         pages: [
             [
-                {
-                    type: 'html',
-                    prompt: `<p>Round 1 of Spin the Wheel is now complete!</p>
-                    <p>Next, you'll play Round 2, which is identical to Round 1 except that the wheel has different outcomes.</p>
-                    <p>To play Round 2, continue to the next screen.</p>`
-                },
-            ],
-        ],
-        button_label_finish: 'Next'    
-    };
-
-    p.intro_3 = {
-        type: jsPsychSurvey,
-        pages: [
-            [
-                {
-                    type: 'html',
-                    prompt: `<p>Round 2 of Spin the Wheel is now complete!</p>
-                    <p>Soon, you'll play Rounds 3 and 4.</p>
-                    <p>To learn about Rounds 3 and 4, continue to the next screen.</p>`
+                {   
+                    type:'html',
+                    prompt:`<p>Great job!</p>
+                    <p>Now that you know how to spin heavy wheels, you'll learn how to spin light-weight wheels.</p>`
                 },
             ],
             [
                 {
                     type: 'html',
-                    prompt: `<p>In Rounds 3 and 4 of Spin the Wheel, you'll need to tap your right arrow ${text.speed1_r2}. ${text.speed2_r2}</p>
-                    <p>To practice, continue to the next page.</p>`,
-                }
-            ]
-        ],
-        button_label_finish: 'Next'    
-    };
-
-    p.intro_4 = {
-        type: jsPsychSurvey,
-        pages: [
-            [
-                {
-                    type: 'html',
-                    prompt: `<p>Round 3 of Spin the Wheel is now complete!</p>
-                    <p>Next, you'll play Round 4, which is identical to Round 3 except that the wheel has different outcomes.</p>
-                    <p>To play Round 4, continue to the next screen.</p>`
+                    prompt: `<p>To spin a light-weight wheel, you must build momentum by tapping the right arrow on your keyboard <b>at a moderate pace</b>. 
+                    If you tap your right arrow either too fast or too slow, the wheel will not build enough momentum to spin.</p>
+                    <p>Next, you'll practice spinning light-weight wheels.</p>`
                 },
             ],
         ],
-        button_label_finish: 'Next'    
+        button_label_finish: 'Next'
     };
 
-    const practiceWheels_r1 = new MakePracticeWheel(text, 1);
+    const practiceWheel_heavy = new MakePracticeWheel('heavy');
 
-    const practiceWheels_r2 = new MakePracticeWheel(text, 3);
+    const practiceWheel_light = new MakePracticeWheel('light');
 
     const attnChk1 = new MakeAttnChk(settings, 1);
-
     const attnChk2 = new MakeAttnChk(settings, 2);
+    const attnChk3 = new MakeAttnChk(settings, 3);
+    const attnChk4 = new MakeAttnChk(settings, 4);
 
     
    /*
@@ -433,7 +427,7 @@ const exp = (function() {
     // scales
     var zeroToExtremely = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>Extremely'];
     var zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>A lot'];
-    var scbScale = ['-5<br>Way too easy', '-4', '-3', '-2', '-1', '0<br>Neither too easy nor too hard', '1', '2', '3', '4', '5<br>Way too hard'];
+    var scbScale = ['-5<br>Way too easy', '-4', '-3', '-2', '-1', '0<br>Neither too easy nor too difficult', '1', '2', '3', '4', '5<br>Way too difficult'];
     var agreeDisagree = ['-5<br>Completely Disagree', '-4', '-3', '-2', '-1', '0<br>Neither agree nor disagree', '1', '2', '3', '4', '5<br>Completely Agree'];
 
     // constructor functions
@@ -441,29 +435,29 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
         <p>Thank you for completing Round ${round} of Spin the Wheel!</p>
-        <p>To what extent did you find Round ${round} <b>immersive</b> and <b>engaging</b>?</p>
-        <p>Report how <b>immersive</b> and <b>engaging</b> you found Round ${round} by answering the following questions.</p></div>`;
+        <p>In Round ${round}, how <b>immersive</b> and <b>engaging</b> was the wheel that you spun?</p>
+        <p>Report how <b>immersive</b> and <b>engaging</b> the wheel was by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>immersive</b> was Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>immersive</b> was the wheel in Round ${round}?</div>`,
                 name: `immersive`,
                 labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engaging</b> was Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engaging</b> was the wheel in Round ${round}?</div>`,
                 name: `engaging`,
                 labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engrossing</b> was Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engrossing</b> was the wheel in Round ${round}?</div>`,
                 name: `engrossing`,
                 labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>boring</b> was Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>boring</b> was the wheel in Round ${round}?</div>`,
                 name: `boring`,
                 labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
                 required: true,
@@ -481,16 +475,16 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.preamble = `<div style='padding-top: 50px; width: 850px; font-size:16px; color:rgb(109, 112, 114)'>
 
-        <p>Below are a few more questions about Round ${round} of Spin the Wheel.</p>`;
+        <p>Below are a few more questions about the wheel in Round ${round}.</p>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>like</b> playing Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>like</b> the wheel in Round ${round}?</div>`,
                 name: `like`,
                 labels: zeroToALot,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>dislike</b> playing Round ${round} of Spin the Wheel?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>How much did you <b>dislike</b> the wheel in Round ${round}?</div>`,
                 name: `dislike`,
                 labels: zeroToALot,
                 required: true,
@@ -508,7 +502,7 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>While playing Round ${round} of Spin the Wheel,<br>how much effort did it feel like you were exerting?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>In Round ${round}, how much effort did it feel like you were exerting?</div>`,
                 name: `effort`,
                 labels: zeroToALot,
                 required: true,
@@ -526,7 +520,7 @@ const exp = (function() {
         this.type = jsPsychSurveyLikert;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>Did you find Round ${round} of Spin the Wheel too easy, too hard,<br>or somewhere in between?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>In Round ${round}, was the wheel too easy, too difficult, or somewhere in between?</div>`,
                 name: `scb`,
                 labels: scbScale,
                 required: true,
@@ -541,21 +535,23 @@ const exp = (function() {
     };
 
     // timeline: first wheel
+    p.practice = {
+        timeline: [howToSpin_heavy, practiceWheel_heavy, howToSpin_light, practiceWheel_light],
+    }
     p.wheel_1 = {
-        timeline: [...practiceWheels_r1.timeline, attnChk1, new MakeSpinLoop(1), new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1), new MakeScbQs(1)],
+        timeline: [attnChk1, new MakeSpinLoop(1), new MakeFlowQs(1), new MakeEnjoyQs(1), new MakeEffortQs(1), new MakeScbQs(1)],
     };
 
-    // timeline: second wheel
     p.wheel_2 = {
-        timeline: [new MakeSpinLoop(2), new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2)],
+        timeline: [attnChk2, new MakeSpinLoop(2), new MakeFlowQs(2), new MakeEnjoyQs(2), new MakeEffortQs(2), new MakeScbQs(2)],
     };
 
     p.wheel_3 = {
-        timeline: [...practiceWheels_r2.timeline, attnChk2, new MakeSpinLoop(3), new MakeFlowQs(3), new MakeEnjoyQs(3), new MakeEffortQs(3), new MakeScbQs(3)],
+        timeline: [attnChk3, new MakeSpinLoop(3), new MakeFlowQs(3), new MakeEnjoyQs(3), new MakeEffortQs(3), new MakeScbQs(3)],
     };
 
     p.wheel_4 = {
-        timeline: [new MakeSpinLoop(4), new MakeFlowQs(4), new MakeEnjoyQs(4), new MakeEffortQs(4), new MakeScbQs(4)],
+        timeline: [attnChk4, new MakeSpinLoop(4), new MakeFlowQs(4), new MakeEnjoyQs(4), new MakeEffortQs(4), new MakeScbQs(4)],
     };
 
    /*
@@ -771,6 +767,6 @@ const exp = (function() {
 
 }());
 
-const timeline = [exp.consent, exp.intro_1, exp.wheel_1, exp.intro_2, exp.wheel_2, exp.intro_3, exp.wheel_3, exp.intro_4, exp.wheel_4, exp.demographics, exp.save_data];
+const timeline = [exp.consent, exp.practice, exp.wheel_1, exp.wheel_2, exp.wheel_3, exp.wheel_4, exp.demographics, exp.save_data];
 
 jsPsych.run(timeline);
