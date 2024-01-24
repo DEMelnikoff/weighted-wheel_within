@@ -131,7 +131,9 @@ const exp = (function() {
             correctAnswers.push(`In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`);
         };
 
-        correctAnswers.push(`${settings.numOutcomes[round % 2]}`);
+        correctAnswers.push(settings.numOutcomes[round % 2]);
+
+        console.log(settings.numOutcomes[round % 2])
 
 
         const attnChk = {
