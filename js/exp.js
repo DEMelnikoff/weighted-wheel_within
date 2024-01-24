@@ -128,13 +128,9 @@ const exp = (function() {
             correctAnswers.push(`Heavy`);
         } else if (settings.effortOrder[0] == 'lowEffort' && round <= 2 || settings.effortOrder[1] == 'lowEffort' && round >= 3) {
             correctAnswers.push(`Light-weight`);
-            correctAnswers.push(`In Round ${round}, I must tap my right arrow at a moderate pace to build momentum.`);
         };
 
-        correctAnswers.push(settings.numOutcomes[round % 2]);
-
-        console.log(settings.numOutcomes[round % 2])
-
+        correctAnswers.push(settings.numOutcomes[1 - round % 2]);
 
         const attnChk = {
            type: jsPsychSurveyMultiChoice,
@@ -211,7 +207,7 @@ const exp = (function() {
                         type: 'html',
                         prompt: `<p>In the first round of Spin the Wheel, you'll be spinning a ${text.weight_r1} wheel. 
                         Accordingly, in Round 1, you'll need to tap your right arrow ${text.speed1_r1}.</p>
-                        <p>In addition, the wheel in Round 1 will have <b>${settings.numOutcomes[0]}</b> unique outcomes.</p>`
+                        <p>In addition, the wheel in Round 1 will have <b>${settings.numOutcomes[0]} unique outcomes</b>.</p>`
                     },
                 ],
             ],
@@ -227,7 +223,7 @@ const exp = (function() {
                         prompt: `<p>Round 1 of Spin the Wheel is now complete! Next, you'll play Round 2.</p>
                         <p>In Round 2, you'll spin another ${text.weight_r1} wheel.
                         Accordingly, in Round 2, you'll need to tap your right arrow ${text.speed1_r1}.</p>
-                        <p>In addition, the wheel in Round 2 will have <b>${settings.numOutcomes[1]}</b> unique outcomes.</p>`
+                        <p>In addition, the wheel in Round 2 will have <b>${settings.numOutcomes[1]} unique outcomes</b>.</p>`
                     },
                 ],
             ],
@@ -243,7 +239,7 @@ const exp = (function() {
                         prompt: `<p>Round 2 of Spin the Wheel is now complete! Next, you'll play Round 3.</p>
                         <p>In Round 3, you'll be spinning a ${text.weight_r2} wheel.
                         Accordingly, in Round 3, you'll need to tap your right arrow ${text.speed1_r2}.</p>
-                        <p>In addition, the wheel in Round 3 will have <b>${settings.numOutcomes[0]}</b> unique outcomes.</p>`
+                        <p>In addition, the wheel in Round 3 will have <b>${settings.numOutcomes[0]} unique outcomes</b>.</p>`
                     },
                 ],
             ],
@@ -259,7 +255,7 @@ const exp = (function() {
                         prompt: `<p>Round 3 of Spin the Wheel is now complete! Next, you'll play Round 4.</p>
                         <p>In Round 4, you'll be spinning another ${text.weight_r2} wheel.
                         Accordingly, in Round 4, you'll need to tap your right arrow ${text.speed1_r2}.</p>
-                        <p>In addition, the wheel in Round 4 will have <b>${settings.numOutcomes[1]}</b> unique outcomes.</p>`
+                        <p>In addition, the wheel in Round 4 will have <b>${settings.numOutcomes[1]} unique outcomes</b>.</p>`
                     },
                 ],
             ],
