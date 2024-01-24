@@ -426,10 +426,10 @@ const exp = (function() {
     */
 
     // scales
-    var zeroToExtremely = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>Extremely'];
-    var zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10<br>A lot'];
-    var scbScale = ['-5<br>Way too easy', '-4', '-3', '-2', '-1', '0<br>Neither too easy nor too difficult', '1', '2', '3', '4', '5<br>Way too difficult'];
-    var agreeDisagree = ['-5<br>Completely Disagree', '-4', '-3', '-2', '-1', '0<br>Neither agree nor disagree', '1', '2', '3', '4', '5<br>Completely Agree'];
+    var zeroToExtremely = ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', "8<br>Extremely"];
+    var zeroToALot = ['0<br>Not at all', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
+    var noneToALot = ['0<br>None', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
+    var scbScale = ['-4<br>Way too easy', '-3', '-2', '-1', '0<br>Neither too easy nor too difficult', '1', '2', '3', '4<br>Way too difficult'];
 
     // constructor functions
     function MakeFlowQs(round) {
@@ -442,30 +442,30 @@ const exp = (function() {
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>How <b>immersive</b> was the wheel in Round ${round}?</div>`,
                 name: `immersive`,
-                labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
+                labels: zeroToExtremely,
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engaging</b> was the wheel in Round ${round}?</div>`,
                 name: `engaging`,
-                labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
+                labels: zeroToExtremely,
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engrossing</b> was the wheel in Round ${round}?</div>`,
                 name: `engrossing`,
-                labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
+                labels: zeroToExtremely,
                 required: true,
             },
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>How <b>boring</b> was the wheel in Round ${round}?</div>`,
                 name: `boring`,
-                labels: ["0<br>Not at all", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely"],
+                labels: zeroToExtremely,
                 required: true,
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 700;
+        this.scale_width = 650;
         this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
@@ -492,7 +492,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 700;
+        this.scale_width = 650;
         this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
@@ -505,12 +505,12 @@ const exp = (function() {
             {
                 prompt: `<div style='color:rgb(109, 112, 114)'>In Round ${round}, how much effort did it feel like you were exerting?</div>`,
                 name: `effort`,
-                labels: zeroToALot,
+                labels: noneToALot,
                 required: true,
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 700;
+        this.scale_width = 650;
         this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);      
@@ -528,7 +528,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 700;
+        this.scale_width = 650;
         this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);      
