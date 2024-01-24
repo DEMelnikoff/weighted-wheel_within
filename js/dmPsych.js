@@ -476,7 +476,8 @@ const dmPsych = (function() {
     let nSpeedUp = 0;            // number of frames over which the wheel has accelerated
     let nSlowDown = 0;           // number of frames over which the wheel has decelerated
     let score = initialScore;
-    let totalSpins = 0
+    let totalSpins = 0;
+    let sector = sectors[0];
 
     /* press rate variables */
     let keydown = false;
@@ -642,10 +643,12 @@ const dmPsych = (function() {
           accel_postDecel = 0;
           nSlowDown = 0;
           nSpeedUp = 0;
-          let sector = sectors[getIndex()];
-          spinnerData.outcomes.push(parseFloat(sector.label));
+          sector = sectors[getIndex()];
+          let numericOutcome = parseFloat(sector.label);
+          numericOutcome = (numericOutcome) ? numericOutcome : 4;
+          spinnerData.outcomes.push(numericOutcome);
           drawSector(sectors, getIndex());
-          updateScore(parseFloat(sector.label), sector.color);
+          updateScore(numericOutcome, sector.color);
           //pointer.style.font = '2rem/0 sans-serif';
           //pointer.textContent = sector.label;
           //pointer.style.background = sector.color;
@@ -693,7 +696,7 @@ const dmPsych = (function() {
     };
 
     /* Draw sectors and prizes texts to canvas */
-    const drawSector = (sectors, sector) => {
+    const drawSector = (sectors, sector_idx) => {
       if (readyToSpin || isSpinning) {
         ctx.lineWidth = 20;
         ctx.strokeStyle = 'yellow';
@@ -722,7 +725,7 @@ const dmPsych = (function() {
         ctx.textAlign = "center";
         ctx.fillStyle = "#fff";
         
-        if (isSpinning && i == sector) {
+        if (isSpinning && i == sector_idx || isSpinning && sector.label == "" && sectors[i].label == "4" && sector_idx != null) {
           ctx.font = "bolder 50px sans-serif"
           ctx.strokeStyle = 'black';
           ctx.lineWidth = 8;

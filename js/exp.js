@@ -7,18 +7,19 @@ const exp = (function() {
 
     // define each wedge
     const wedges = {
-        two: {color:"#003b5c", label:"2"},
+        one: {color:"#003b5c", label:"1"},
         three: {color:"#0057e5", label:"3"},
         four: {color:"#41b6e6", label:"4"},
+        four_blank: {color:"#41b6e6", label:""},
         five: {color:"#3ea908", label:"5"},
         six: {color:"#f0cc2e", label:"6"},
         seven: {color:"#ec894d", label:"7"},
         eight: {color:"#e50000", label:"8"},
-        nine: {color:"#e641b6", label:"9"},
+        ten: {color:"#e641b6", label:"10"},
     };
 
-    const highMI_wheel = [ wedges.two, wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.nine ];
-    const lowMI_wheel1 = [ wedges.four, wedges.seven ];
+    const highMI_wheel = [ wedges.one, wedges.three, wedges.four, wedges.five, wedges.six, wedges.seven, wedges.eight, wedges.ten ];
+    const lowMI_wheel1 = [ wedges.four_blank, wedges.four, wedges.four_blank, wedges.ten ];
     const lowMI_wheel2 = [ wedges.three, wedges.eight ];
 
     const wheelDraw = Math.floor(Math.random() * 2);
@@ -26,7 +27,7 @@ const exp = (function() {
         nSpins: 5,
         effortOrder: jsPsych.randomization.repeat(['highEffort', 'lowEffort'], 1),
         miOrder: jsPsych.randomization.repeat(['highMI', 'lowMI'], 1),
-        lowMI_wheel: [lowMI_wheel1, lowMI_wheel2][wheelDraw],
+        lowMI_wheel: [lowMI_wheel1, lowMI_wheel1][wheelDraw],
         highMI_wheel: highMI_wheel,
     };
 
@@ -79,7 +80,7 @@ const exp = (function() {
             <p>Practice spinning <b>${weightText}</b> wheels by tapping your right arrow ${speedText} until a yellow ring appears. Then, stop tapping to spin the wheel.</p>
             </div>`,
             stimulus: function(c, spinnerData) {
-                dmPsych.spinner(c, spinnerData, [ wedges.three, wedges.four, wedges.seven, wedges.eight ], targetPressTime, [0], 1, scoreTracker_practice);
+                dmPsych.spinner(c, spinnerData, [ wedges.three, wedges.four, wedges.seven, wedges.eight  ], targetPressTime, [0], 1, scoreTracker_practice);
             },
             nSpins: 1,
             initialScore: function() {
