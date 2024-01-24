@@ -295,11 +295,10 @@ const exp = (function() {
             [
                 {   
                     type:'html',
-                    prompt:`<p><strong>What makes some activities more immersive and engaging than others?</strong></p>
+                    prompt:`<p><b>What makes some activities more immersive and engaging than others?</b></p>
                     <p>We're interested in why people feel completely immersed in some activities (such as engrossing video games),
                     but struggle to focus on other activities (like tedious chores).</p>
-                    <p>To help us, you'll play four rounds of a game called <strong>Spin the Wheel</strong>.
-                    After each round, you'll report how immersed and engrossed you felt.</p>
+                    <p>To help us, you'll play four rounds of a game called <b>Spin the Wheel</b>.</p>
                     <p>When you're ready to learn about Spin the Wheel, continue to the next page.</p>`
                 },
             ],
@@ -465,7 +464,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 650;
+        this.scale_width = 600;
         this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
@@ -492,7 +491,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 650;
+        this.scale_width = 600;
         this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);
@@ -510,7 +509,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 650;
+        this.scale_width = 600;
         this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);      
@@ -528,7 +527,7 @@ const exp = (function() {
             },
         ];
         this.randomize_question_order = false;
-        this.scale_width = 650;
+        this.scale_width = 600;
         this.data = {round: round};
         this.on_finish = (data) => {
             dmPsych.saveSurveyData(data);      
