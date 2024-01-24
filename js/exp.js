@@ -29,7 +29,7 @@ const exp = (function() {
         nSpins: 5,
         effortOrder: jsPsych.randomization.repeat(['highEffort', 'lowEffort'], 1),
         miOrder: [['highMI', 'lowMI'], ['lowMI', 'highMI']][miDraw],
-        numOutcomes: [['8', '2'], ['2', '8']][miDraw];
+        numOutcomes: [['8', '2'], ['2', '8']][miDraw],
         lowMI_wheel: [lowMI_wheel1, lowMI_wheel1][wheelDraw],
         highMI_wheel: highMI_wheel,
     };
