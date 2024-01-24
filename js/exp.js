@@ -446,25 +446,25 @@ const exp = (function() {
         <p>Report how <b>immersive</b> and <b>engaging</b> the wheel was by answering the following questions.</p></div>`;
         this.questions = [
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>immersive</b> was the wheel in Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>In Round ${round}, how <b>immersive</b> was the wheel?</div>`,
                 name: `immersive`,
                 labels: zeroToExtremely,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engaging</b> was the wheel in Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>In Round ${round}, how <b>engaging</b> was the wheel?</div>`,
                 name: `engaging`,
                 labels: zeroToExtremely,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>engrossing</b> was the wheel in Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>In Round ${round}, how <b>engrossing</b> was the wheel?</div>`,
                 name: `engrossing`,
                 labels: zeroToExtremely,
                 required: true,
             },
             {
-                prompt: `<div style='color:rgb(109, 112, 114)'>How <b>boring</b> was the wheel in Round ${round}?</div>`,
+                prompt: `<div style='color:rgb(109, 112, 114)'>In Round ${round}, how <b>boring</b> was the wheel?</div>`,
                 name: `boring`,
                 labels: zeroToExtremely,
                 required: true,
